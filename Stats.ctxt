@@ -1,0 +1,25 @@
+#BlueJ class context
+comment0.params=HP\ attack\ defense\ evade\ accuracy
+comment0.target=Stats(int,\ int,\ int,\ double,\ double)
+comment0.text=\r\n\ Constructor\ for\ objects\ of\ class\ Stats\r\n
+comment1.params=
+comment1.target=int\ getHP()
+comment10.params=v
+comment10.target=void\ setAccuracy(double)
+comment2.params=
+comment2.target=int\ getAttack()
+comment3.params=
+comment3.target=int\ getDefense()
+comment4.params=
+comment4.target=double\ getEvade()
+comment5.params=
+comment5.target=double\ getAccuracy()
+comment6.params=v
+comment6.target=void\ setHP(int)
+comment7.params=v
+comment7.target=void\ setAttack(int)
+comment8.params=v
+comment8.target=void\ setDefense(int)
+comment9.params=v
+comment9.target=void\ setEvade(double)
+numComments=11
