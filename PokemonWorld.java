@@ -25,20 +25,10 @@ public class PokemonWorld extends World
         addObject(w1, x, y);*/
     }
     public void act() {
-        ArrayList<Attack> MewtwoAttacks = new ArrayList<Attack>(); 
-        MewtwoAttacks.add(new Psychic());
-        MewtwoAttacks.add(new Psybeam());
-        MewtwoAttacks.add(new SandAttack());
-        MewtwoAttacks.add(new Tackle());
-        Pokemon mewtwo = new Mewtwo(MewtwoAttacks);
+        Pokemon mewtwo = new Mewtwo();
         addObject(mewtwo, 120, 300);
         
-        ArrayList<Attack> BlastoiseAttacks = new ArrayList<Attack>();
-        BlastoiseAttacks.add(new AuroraBeam());
-        BlastoiseAttacks.add(new HydroPump());
-        BlastoiseAttacks.add(new Slash());
-        BlastoiseAttacks.add(new Tackle());
-        Pokemon blastoise = new Blastoise(BlastoiseAttacks);
+        Pokemon blastoise = new Blastoise();
         addObject(blastoise, 680, 300);
         
         ArrayList<Pokemon> AshPokemon = new ArrayList<Pokemon>();

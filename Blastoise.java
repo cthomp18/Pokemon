@@ -14,6 +14,11 @@ public class Blastoise extends Pokemon
    private ArrayList<Stats> stats;
    
     public Blastoise(ArrayList<Attack> att) {
-        super(att, new PokeType("Water"), new Stats(165, 115, 130, 1.0, 1.0), "Blastoise");
+		attacks = new ArrayList<Attack>();
+        attacks.add(new AuroraBeam());
+        attacks.add(new HydroPump());
+        attacks.add(new Slash());
+        attacks.add(new Tackle());
+        super(attacks, new PokeType("Water"), new Stats(165, 115, 130, 1.0, 1.0), "Blastoise");
     }
 }

@@ -15,15 +15,14 @@ public class Mewtwo extends Pokemon
    
    private GreenfootImage MewtwoImage;
    
-    public Mewtwo(ArrayList<Attack> att) {
-        super(att, new PokeType("Psychic"), new Stats(190, 135, 120, 1.0, 1.0), "Mewtwo");
+    public Mewtwo() {
         MewtwoImage = new GreenfootImage(getImage());
-        
-        MouseInfo mouse = Greenfoot.getMouseInfo();
-        
-        if(mouse != null && mouse.getX() > 300) {
-            MewtwoImage.mirrorHorizontally();
-        }
+        attacks = new ArrayList<Attack>(); 
+        attacks.add(new Psychic());
+        attacks.add(new Psybeam());
+        attacks.add(new SandAttack());
+        attacks.add(new Tackle());
+        super(attacks, new PokeType("Psychic"), new Stats(190, 135, 120, 1.0, 1.0), "Mewtwo");
         
     }
     
