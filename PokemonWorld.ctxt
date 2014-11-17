@@ -1,11 +1,16 @@
 #BlueJ class context
 comment0.params=
 comment0.target=PokemonWorld()
-comment0.text=\n\ Constructor\ for\ objects\ of\ class\ PokemonWorld.\n\ \n
 comment1.params=
 comment1.target=void\ act()
 comment2.params=s1\ s2\ a
-comment2.target=double\ getDamage(Stats,\ Stats,\ Attack)
+comment2.target=int\ getDamage(Stats,\ Stats,\ Attack)
 comment3.params=s1\ s2\ a
 comment3.target=boolean\ isHit(Stats,\ Stats,\ Attack)
-numComments=4
+comment4.params=trainer
+comment4.target=void\ displayAttacks(Trainer)
+comment5.params=trainer
+comment5.target=Attack\ chooseAttack(Trainer)
+comment6.params=trainer
+comment6.target=void\ displayPokemon(Trainer)
+numComments=7
