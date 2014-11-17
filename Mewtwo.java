@@ -1,5 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * Write a description of class Metwo here.
@@ -10,20 +10,15 @@ import java.util.ArrayList;
 public class Mewtwo extends Pokemon
 {
    private PokeType type;
-   private ArrayList<Attack> attacks;
    private ArrayList<Stats> stats;
    
    private GreenfootImage MewtwoImage;
    
     public Mewtwo() {
+        super((ArrayList)Arrays.asList(new Psychic(), new Psybeam(), new SandAttack(), new Tackle()),
+         new PokeType("Psychic"), new Stats(190, 135, 120, 1.0, 1.0), "Mewtwo");
         MewtwoImage = new GreenfootImage(getImage());
-        attacks = new ArrayList<Attack>(); 
-        attacks.add(new Psychic());
-        attacks.add(new Psybeam());
-        attacks.add(new SandAttack());
-        attacks.add(new Tackle());
-        super(attacks, new PokeType("Psychic"), new Stats(190, 135, 120, 1.0, 1.0), "Mewtwo");
-        
     }
-    
 }
+   
+

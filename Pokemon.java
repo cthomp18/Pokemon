@@ -23,7 +23,7 @@ public abstract class Pokemon extends Actor
         this.stats = stats;
         this.name = name;
     }
-    
+   
     public PokeType getType() {
         return this.type;
     }
