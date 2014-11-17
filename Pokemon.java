@@ -1,5 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * Write a description of class Pokemon here.
@@ -14,7 +14,7 @@ public abstract class Pokemon extends Actor
     PokeType type;
     Stats stats;
     
-    public Pokemon(ArrayList<Attack> attacks, PokeType type, Stats stats, String name){
+    public Pokemon(List<Attack> attacks, PokeType type, Stats stats, String name){
         this.attacks = new ArrayList<Attack>();
         for (int i = 0; i < 4; i++) {
             this.attacks.add(attacks.get(i));

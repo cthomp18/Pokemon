@@ -15,7 +15,7 @@ public class Blastoise extends Pokemon
    private GreenfootImage blastoiseImage;
    
     public Blastoise() {
-      super((ArrayList)Arrays.asList(new AuroraBeam(), new HydroPump(), new Slash(), new Tackle()),
+      super(Arrays.asList(new AuroraBeam(), new HydroPump(), new Slash(), new Tackle()),
        new PokeType("Water"), new Stats(165, 115, 130, 1.0, 1.0), "Blastoise"); 
       blastoiseImage = new GreenfootImage(getImage());
     } 
