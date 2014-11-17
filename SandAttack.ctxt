@@ -1,5 +1,9 @@
 #BlueJ class context
 comment0.params=
 comment0.target=SandAttack()
+<<<<<<< HEAD
 comment0.text=\n\ Constructor\ for\ objects\ of\ class\ SandAttack\n
+=======
+comment0.text=\r\n\ Constructor\ for\ objects\ of\ class\ SandAttack\r\n
+>>>>>>> ac1bc4b4881686c2859f45234475d58b20cb3b1b
 numComments=1
