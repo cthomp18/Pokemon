@@ -24,6 +24,9 @@ public abstract class Pokemon extends Actor
         this.name = name;
     }
    
+    public String getName() {
+        return this.name;
+    }
     public PokeType getType() {
         return this.type;
     }

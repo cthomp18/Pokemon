@@ -1,6 +1,7 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.ArrayList;
 
+
 /**
  * Write a description of class PokemonWorld here.
  * 
@@ -32,25 +33,52 @@ public class PokemonWorld extends World
     {    
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
         super(800, 600, 1); 
-        System.out.println("first");
+        
+        ashTurn = true;
+        worldWidth = this.getWidth() * this.getCellSize();
+        
         //draw wombat somwhere in the first 3 rows
         /*Wombat w1 = new Wombat();
         x = Greenfoot.getRandomNumber(width);
         y = Greenfoot.getRandomNumber(3);
         addObject(w1, x, y);*/
-        ArrayList MewtwoAttacks = new ArrayList(); 
-        MewtwoAttacks.add(new HydroPump());
-        MewtwoAttacks.add(new HydroPump());
-        MewtwoAttacks.add(new HydroPump());
-        MewtwoAttacks.add(new HydroPump());
+        ArrayList<Pokemon> pokemon = new ArrayList<Pokemon>();
+        pokemon.add(new Mewtwo());
+        pokemon.add(new Blastoise());
+        pokemon.add(new Arcanine());
+        pokemon.add(new Dragonite());
+        pokemon.add(new Kangaskhan());
+        pokemon.add(new Onix());
+        pokemon.add(new Marowak());
+        pokemon.add(new Pikachu());
+        pokemon.add(new Venusaur());
+        pokemon.add(new Scyther());
+        pokemon.add(new Jigglypuff());
+        pokemon.add(new Rapidash());
+        pokemon.add(new Lapras());
+        pokemon.add(new Voltorb());
+        pokemon.add(new Pidgeot());
+        pokemon.add(new Alakazam());
+        
+        /*
+         * ArrayList AshPokemon = new ArrayList();
+         * ArrayList GaryPokemon = new ArrayList();
+         * int ind;
+         * for (int i = 0; i < 12; i++) {
+         *     ind = (Math.random() * pokemon.size()) % pokemon.size();
+         *     if (ashTurn) {
+         *         AshPokemon.add(pokemon.remove(ind));
+         *         ashTurn = false;
+         *     } else {
+         *         GaryPokemon.add(pokemon.remove(ind));
+         *         ashTurn = true;
+         *     }
+         * }
+         * ashTurn = true;
+         */
+        
         Pokemon mewtwo = new Mewtwo();
         addObject(mewtwo, 120, 300);
-        
-        ArrayList BlastoiseAttacks = new ArrayList();
-        BlastoiseAttacks.add(new HydroPump());
-        BlastoiseAttacks.add(new HydroPump());
-        BlastoiseAttacks.add(new HydroPump());
-        BlastoiseAttacks.add(new HydroPump());
         Pokemon blastoise = new Blastoise();
         addObject(blastoise, 680, 300);
         
@@ -65,13 +93,9 @@ public class PokemonWorld extends World
         attImg1 = new Image();
         attImg2 = new Image();
         attImg3 = new Image();
-        attImg4 = new Image();
-        
-        ashTurn = true;
-        worldWidth = this.getWidth() * this.getCellSize();
+        attImg4 = new Image();        
         
         Gary = new Trainer(GaryPokemon);
-        System.out.println("second");
     }
     public void act() {
         
@@ -130,8 +154,6 @@ public class PokemonWorld extends World
            // System.out.println("~~");
             if(playerAction == 3) {
                 //enemyAttack = Gary.attack(); //Add AI for choosing attacks. This will always choose Hydro
-                //Ash.getCurrentPokemon().getStats().getHurt(getDamage(Gary.getCurrentPokemon().getStats(), Ash.getCurrentPokemon().getStats(), Ash.getCurrentPokemon().getAttacks().get(0)));
-              
                 AshStats = Ash.getCurrentPokemon().getStats();
                 GaryStats = Gary.getCurrentPokemon().getStats();
                 
@@ -148,12 +170,18 @@ public class PokemonWorld extends World
                     else if (isHit(AshStats, GaryStats, AshAttack)) {
                         GaryStats.setHP(GaryStats.getHP() - (int)AshDamage);
                     }
+                    else {
+                        System.out.println(Ash.getCurrentPokemon().getName() + "'s Attack Missed!");
+                    }
                 }
                 else {
                     System.out.println("Attacking with: " + GaryAttack.getName());
                     if (isHit(GaryStats, AshStats, GaryAttack)) {
                         GaryDamage = this.getDamage(GaryStats, AshStats, GaryAttack);
                         AshStats.setHP(AshStats.getHP() - (int)GaryDamage);
+                    }
+                    else {
+                        System.out.println(Gary.getCurrentPokemon().getName() + "'s Attack Missed!");
                     }
                 }
                 System.out.println("Mewtwo : " + AshStats.getHP());
@@ -169,7 +197,6 @@ public class PokemonWorld extends World
                     ashTurn = true;
                 }
                 
-                //addObject(Ash, 160, 475);
                 if (AshStats.getHP() <= 0) {
                     System.out.println("Trainer 2 Wins!");
                     Ash.getCurrentPokemon().getImage().clear();
@@ -216,23 +243,20 @@ public class PokemonWorld extends World
 
     public void displayAttacks(Trainer trainer) {
         Pokemon attackingPokemon = trainer.getCurrentPokemon();
+        ArrayList<Attack> attacks = attackingPokemon.getAttacks();
         
+        attImg1.setImage(new GreenfootImage("images/Attacks/" + attacks.get(3).getName().replaceAll("\\s+","") + ".png"));
+        attImg2.setImage(new GreenfootImage("images/Attacks/" + attacks.get(2).getName().replaceAll("\\s+","") + ".png"));
+        attImg3.setImage(new GreenfootImage("images/Attacks/" + attacks.get(1).getName().replaceAll("\\s+","") + ".png"));
+        attImg4.setImage(new GreenfootImage("images/Attacks/" + attacks.get(0).getName().replaceAll("\\s+","") + ".png"));
         drawAttack(trainer);
-        attImg1.setImage(new GreenfootImage("images/" + /*attack.getName()*/"Psychic" +".png"));
-        attImg2.setImage(new GreenfootImage("images/" + /*attack.getName()*/"Psychic" +".png"));
-        attImg3.setImage(new GreenfootImage("images/" + /*attack.getName()*/"Psychic" +".png"));
-        attImg4.setImage(new GreenfootImage("images/" + /*attack.getName()*/"Psychic" +".png"));
     }
     
     public void drawAttack(Trainer trainer) {
         addObject(attImg1, trainer.getX() - 55, trainer.getY() + 30);
         addObject(attImg2, trainer.getX() + 55, trainer.getY() + 30);
         addObject(attImg3, trainer.getX() + 55, trainer.getY() - 10);
-        addObject(attImg4, trainer.getX() - 55, trainer.getY() - 10);
-        /*trainer.getImage().drawImage(attackImage1, 10, 40);
-        trainer.getImage().drawImage(attackImage2, 150, 40);
-        trainer.getImage().drawImage(attackImage3, 10, 0);
-        trainer.getImage().drawImage(attackImage4, 150, 0);  */      
+        addObject(attImg4, trainer.getX() - 55, trainer.getY() - 10);    
     }
     
     public void clearAttack() {
@@ -244,70 +268,21 @@ public class PokemonWorld extends World
 
     public Attack chooseAttack(Trainer trainer) {
         if (Greenfoot.mouseClicked(attImg1)) {
-            return trainer.getCurrentPokemon().getAttacks().get(0);
-        }
-        else if (Greenfoot.mouseClicked(attImg2)) {
-            return trainer.getCurrentPokemon().getAttacks().get(1);
-        }
-        else if (Greenfoot.mouseClicked(attImg3)) {
-            return trainer.getCurrentPokemon().getAttacks().get(2);
-        }
-        else if (Greenfoot.mouseClicked(attImg4)) {
             return trainer.getCurrentPokemon().getAttacks().get(3);
         }
-        return null;
-        /*MouseInfo mouse = Greenfoot.getMouseInfo();
-        if(mouse != null) {
-            if(mouse.getClickCount() == 1 && mouse.getX() > 0 && mouse.getX() < 110 && mouse.getY() > 330 && mouse.getY() < 370){
-                //Attack with attack1
-                return trainer.getCurrentPokemon().getAttacks().get(0);
-            } else if(mouse.getClickCount() == 1 && mouse.getX() > 130 && mouse.getX() < 230 && mouse.getY() > 330 && mouse.getY() < 370) {
-                //Attack with attack4
-                return trainer.getCurrentPokemon().getAttacks().get(3);        
-            } else if(mouse.getClickCount() == 1 && mouse.getX() > 0 && mouse.getX() < 110 && mouse.getY() > 370 && mouse.getY() < 410) {
-                //Attack with attack2
-                return trainer.getCurrentPokemon().getAttacks().get(1);        
-            } else if(mouse.getClickCount() == 1 && mouse.getX() > 130 && mouse.getX() < 230 && mouse.getY() > 370 && mouse.getY() < 410) {
-                //Attack with attack3
-                return trainer.getCurrentPokemon().getAttacks().get(2);        
-            }
-            System.out.println("GUUUUUUHHHHHHH");   
+        else if (Greenfoot.mouseClicked(attImg2)) {
+            return trainer.getCurrentPokemon().getAttacks().get(2);
         }
-        return null;*/
+        else if (Greenfoot.mouseClicked(attImg3)) {
+            return trainer.getCurrentPokemon().getAttacks().get(1);
+        }
+        else if (Greenfoot.mouseClicked(attImg4)) {
+            return trainer.getCurrentPokemon().getAttacks().get(0);
+        }
+        return null;
     }
     
     public void displayPokemon(Trainer trainer) {
         
     }
 }
- /*       if (mouse != null) {
-            if(mouse.getClickCount() == 1 && mouse.getX() > 50 && mouse.getX() < 160 && mouse.getY() > 460 && mouse.getY() < 490){
-                System.out.println("Fight chosen");
-                Trainer attackingTrainer = (Trainer)mouse.getActor();
-                Pokemon attackingPokemon = attackingTrainer.getCurrentPokemon();
-                Attack attack1 = attackingPokemon.getAttacks().get(0);
-                GreenfootImage attack1Image = new GreenfootImage(attack1.getName() +".png");
-                Attack attack2 = attackingPokemon.getAttacks().get(1);
-                GreenfootImage attack2Image = new GreenfootImage(attack2.getName()+".png");
-                Attack attack3 = attackingPokemon.getAttacks().get(2);
-                GreenfootImage attack3Image = new GreenfootImage(attack3.getName()+".png");
-                Attack attack4 = attackingPokemon.getAttacks().get(3);
-                GreenfootImage attack4Image = new GreenfootImage(attack4.getName()+".png");
-                
-                attackingTrainer.getImage().drawImage(attack1Image, 10, 0);//Psychic
-                attackingTrainer.getImage().drawImage(attack4Image, 150, 0);//Tackle
-                attackingTrainer.getImage().drawImage(attack2Image, 10, 40);//HydroPump
-                attackingTrainer.getImage().drawImage(attack3Image, 150, 40);//Slash
-                
-                
-                //Bring up attacks method
-                
-            } else if(mouse.getClickCount() == 1 && mouse.getX() > -40 && mouse.getX() < 60 && mouse.getY() > -50 && mouse.getY() < 50){
-                System.out.println("Psychic chosen");
-                
-            } else if(mouse.getClickCount() == 1 && mouse.getX() > 55 && mouse.getX() < 150 && mouse.getY() > 460 && mouse.getY() < 490) {
-                
-            }
-        }
-    }
-}*/
