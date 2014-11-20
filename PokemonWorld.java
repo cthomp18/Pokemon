@@ -117,7 +117,6 @@ public class PokemonWorld extends World
                     if(ashTurn && mouse.getClickCount() == 1 && mouse.getX() > 50 && mouse.getX() < 160 && mouse.getY() > 460 && mouse.getY() < 490){
                         playerAction = 1;
                         displayAttacks(Ash);
-<<<<<<< HEAD
                         System.out.println("Clicked fight!!");
                     } 
                     else if (!AI && !ashTurn && mouse.getClickCount() == 1 && mouse.getX() < worldWidth - 160 && mouse.getX() > worldWidth - 270 && 
@@ -130,14 +129,6 @@ public class PokemonWorld extends World
                         playerAction = 1;
                     }
                     else if(false) { //Choose Pokemon and display them
-=======
-                        //System.out.println("Clicked fight!!");
-                    } else if (!ashTurn && mouse.getClickCount() == 1 && mouse.getX() < worldWidth - 160 && mouse.getX() > worldWidth - 270 && mouse.getY() > 460 && mouse.getY() < 490) {
-                        playerAction = 1;
-                        displayAttacks(Gary);
-                        //System.out.println("Clicked fight!!");
-                    } else if(false) { //Choose Pokemon and display them
->>>>>>> 4d89fd86cbc6ec8aee90fe8d9289184488a2140e
                         displayPokemon(Ash);
                         playerAction = 2;
                     }
