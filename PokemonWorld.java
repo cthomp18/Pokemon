@@ -1,5 +1,6 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.ArrayList;
+import java.lang.Math;
 
 
 /**
@@ -296,7 +297,9 @@ public class PokemonWorld extends World
             return null;
         }
         else {
-            return trainer.getCurrentPokemon().getAttacks().get(0);
+			double random = Math.random();
+			int r = (int) (random * 100) % 4;
+            return trainer.getCurrentPokemon().getAttacks().get(r);
         }
     }
     
