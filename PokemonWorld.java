@@ -37,7 +37,7 @@ public class PokemonWorld extends World
     boolean ashTurn;
     int worldWidth;    
 
-    Boolean AI = false;
+    Boolean AI = true;
     
     public PokemonWorld()
     {    
@@ -82,6 +82,8 @@ public class PokemonWorld extends World
         
         addObject(AshPokemon.get(0), 150, 250);
         addObject(GaryPokemon.get(0), 650, 250);
+        System.out.println("Ash sends out " + AshPokemon.get(0).getName() + "!");
+        System.out.println("Gary sends out " + GaryPokemon.get(0).getName() + "!");
         Ash = new Trainer(AshPokemon, "Ash");
         Gary = new Trainer(GaryPokemon, "Gary");
         addObject(Ash, 160, 475);
@@ -123,30 +125,20 @@ public class PokemonWorld extends World
                         drawPokemon(x, y);
                     }
                 } else {
-                    if (!ashTurn && mouse.getClickCount() == 1 && mouse.getX() < worldWidth - 160 && mouse.getX() > worldWidth - 270 && mouse.getY() > 460 && mouse.getY() < 490) {
+                    if (!AI && mouse.getClickCount() == 1 && mouse.getX() < worldWidth - 160 && mouse.getX() > worldWidth - 270 && mouse.getY() > 460 && mouse.getY() < 490) {
                         playerAction = 1;
                         displayAttacks(Gary);
                     }
-                    else if(mouse.getClickCount() == 1 && mouse.getX() < worldWidth - 160 && mouse.getX() > worldWidth - 270 && mouse.getY() > 490 && mouse.getY() < 520) {
+                    else if(!AI && mouse.getClickCount() == 1 && mouse.getX() < worldWidth - 160 && mouse.getX() > worldWidth - 270 && mouse.getY() > 490 && mouse.getY() < 520) {
                         playerAction = 2;
                         x = worldWidth - 325;
                         displayPokemon(Gary);
                         drawPokemon(x, y);
                     }
+                    else if (AI) {
+                        playerAction = 1;
+                    }
                }
-                /*if(ashTurn && mouse.getClickCount() == 1 && mouse.getX() > 50 && mouse.getX() < 160 && mouse.getY() > 460 && mouse.getY() < 490){
-                    playerAction = 1;
-                    displayAttacks(Ash);
-                } 
-                else if (!AI && !ashTurn && mouse.getClickCount() == 1 && mouse.getX() < worldWidth - 160 && mouse.getX() > worldWidth - 270 && 
-                 mouse.getY() > 460 && mouse.getY() < 490) {
-                    playerAction = 1;
-                    displayAttacks(Gary);
-                    System.out.println("Clicked fight!!");
-                } 
-                else if(AI && !ashTurn) {
-                    playerAction = 1;
-                }*/
             }
         }
 
@@ -168,13 +160,19 @@ public class PokemonWorld extends World
             //AI
             else if (AI && !ashTurn) {
                 playerAction = 3;
+                System.out.println(Gary.getCurrentPokemon().getName() + " uses " + GaryAttack.getName() + "!");
             }
         }
 
         if(playerAction == 2) {
             int ind;
             Pokemon p, p2;
-            ind = choosePokemon();
+            
+            if (ashTurn)
+                ind = choosePokemon(Ash);
+            else
+                ind = choosePokemon(Gary);
+                
             if (ind != -1) {
                 if (ashTurn) {
                     p2 = Ash.getCurrentPokemon();
@@ -395,7 +393,7 @@ public class PokemonWorld extends World
     }
 
     public Attack chooseAttack(Trainer trainer) {
-        if(!AI || trainer.getName() == "Ash") {
+        if(!AI || ashTurn) {
             if (Greenfoot.mouseClicked(attImg1)) {
                 return trainer.getCurrentPokemon().getAttacks().get(3);
             }
@@ -412,29 +410,42 @@ public class PokemonWorld extends World
         }
         else {
             double random = Math.random();
-            int r = (int) (random * 100) % 4;
+            int r = (int) (random * 4) % 4;
             return trainer.getCurrentPokemon().getAttacks().get(r);
         }
     }
     
-    public int choosePokemon() {
-        if (Greenfoot.mouseClicked(pokImg1)) {
-            return 0;
-        }
-        else if (Greenfoot.mouseClicked(pokImg2)) {
-            return 1;
-        }
-        else if (Greenfoot.mouseClicked(pokImg3)) {
-            return 2;
-        }
-        else if (Greenfoot.mouseClicked(pokImg4)) {
-            return 3;
-        }
-        else if (Greenfoot.mouseClicked(pokImg5)) {
-            return 4;
-        }
-        else if (Greenfoot.mouseClicked(pokImg6)) {
-            return 5;
+    public int choosePokemon(Trainer trainer) {
+        ArrayList<Pokemon> ps = trainer.getAllPokemon();
+        Pokemon p = trainer.getCurrentPokemon();
+        double rand;
+        int r = 0;
+        if(!AI || ashTurn) {
+            if (Greenfoot.mouseClicked(pokImg1)) {
+                return 0;
+            }
+            else if (Greenfoot.mouseClicked(pokImg2)) {
+                return 1;
+            }
+            else if (Greenfoot.mouseClicked(pokImg3)) {
+                return 2;
+            }
+            else if (Greenfoot.mouseClicked(pokImg4)) {
+                return 3;
+            }
+            else if (Greenfoot.mouseClicked(pokImg5)) {
+                return 4;
+            }
+            else if (Greenfoot.mouseClicked(pokImg6)) {
+                return 5;
+            }
+        } else {
+            while (!p.isAlive()) {
+                rand = Math.random();
+                r = (int) (rand * 6) % 6;
+                p = ps.get(r);
+            }
+            return r;
         }
         return -1;
     }
