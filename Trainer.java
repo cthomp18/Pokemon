@@ -10,14 +10,20 @@ public class Trainer extends Actor
 {
     ArrayList<Pokemon> pokemon;
     int currentPokemon;
+	String name;
     
     /**
      * Act - do whatever the Trainer wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
-    public Trainer(ArrayList<Pokemon> pokemon) {
+    public Trainer(ArrayList<Pokemon> pokemon, String name) {
         this.pokemon = pokemon;
+		this.name = name;
     }
+	
+	public String getName() {
+		return this.name;
+	}
     
     public Attack attack() {
         return getAttackChoice();

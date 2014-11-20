@@ -1,7 +1,7 @@
 #BlueJ class context
 comment0.params=HP\ attack\ defense\ evade\ accuracy
 comment0.target=Stats(int,\ int,\ int,\ double,\ double)
-comment0.text=\r\n\ Constructor\ for\ objects\ of\ class\ Stats\r\n
+comment0.text=\n\ Constructor\ for\ objects\ of\ class\ Stats\n
 comment1.params=
 comment1.target=int\ getHP()
 comment10.params=v
