@@ -37,11 +37,6 @@ public class PokemonWorld extends World
         ashTurn = true;
         worldWidth = this.getWidth() * this.getCellSize();
         
-        //draw wombat somwhere in the first 3 rows
-        /*Wombat w1 = new Wombat();
-        x = Greenfoot.getRandomNumber(width);
-        y = Greenfoot.getRandomNumber(3);
-        addObject(w1, x, y);*/
         ArrayList<Pokemon> pokemon = new ArrayList<Pokemon>();
         pokemon.add(new Mewtwo());
         pokemon.add(new Blastoise());
@@ -113,28 +108,23 @@ public class PokemonWorld extends World
         
         //While trainers haven't blacked out yet
         if (Ash.getCurrentPokemon().isAlive() && Gary.getCurrentPokemon().isAlive()) {
-           // System.out.println("Hey...");
             if (playerAction == 0) {
-               // System.out.println("Yo...");
                 if (mouse != null) {
-                    //System.out.println("Checking...");
                     if(ashTurn && mouse.getClickCount() == 1 && mouse.getX() > 50 && mouse.getX() < 160 && mouse.getY() > 460 && mouse.getY() < 490){
                         playerAction = 1;
                         displayAttacks(Ash);
-                        System.out.println("Clicked fight!!");
+                        //System.out.println("Clicked fight!!");
                     } else if (!ashTurn && mouse.getClickCount() == 1 && mouse.getX() < worldWidth - 160 && mouse.getX() > worldWidth - 270 && mouse.getY() > 460 && mouse.getY() < 490) {
                         playerAction = 1;
                         displayAttacks(Gary);
-                        System.out.println("Clicked fight!!");
+                        //System.out.println("Clicked fight!!");
                     } else if(false) { //Choose Pokemon and display them
                         displayPokemon(Ash);
                         playerAction = 2;
                     }
                 }
             }
-            //System.out.println("playerAction: "+ playerAction);
 
-            //action = Ash.action();
             if (playerAction == 1) {
                 if (ashTurn) {
                     AshAttack = chooseAttack(Ash);
