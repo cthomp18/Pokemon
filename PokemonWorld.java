@@ -27,10 +27,17 @@ public class PokemonWorld extends World
     Image attImg3;
     GreenfootImage attackImage4;
     Image attImg4;
+    Image pokImg1;
+    Image pokImg2;
+    Image pokImg3;
+    Image pokImg4;
+    Image pokImg5;
+    Image pokImg6;
+   
     boolean ashTurn;
     int worldWidth;    
 
-    Boolean AI = true;
+    Boolean AI = false;
     
     public PokemonWorld()
     {    
@@ -57,36 +64,24 @@ public class PokemonWorld extends World
         pokemon.add(new Voltorb());
         pokemon.add(new Pidgeot());
         pokemon.add(new Alakazam());
+
+        ArrayList<Pokemon> AshPokemon = new ArrayList<Pokemon>();
+        ArrayList<Pokemon> GaryPokemon = new ArrayList<Pokemon>();
+        int ind;
+        for (int i = 0; i < 12; i++) {
+            ind = (int)((Math.random() * pokemon.size()) % pokemon.size());
+            if (ashTurn) {
+                AshPokemon.add(pokemon.remove(ind));
+                ashTurn = false;
+            } else {
+                GaryPokemon.add(pokemon.remove(ind));
+                ashTurn = true;
+            }
+        }
+        ashTurn = true;
         
-        /*
-         * ArrayList AshPokemon = new ArrayList();
-         * ArrayList GaryPokemon = new ArrayList();
-         * int ind;
-         * for (int i = 0; i < 12; i++) {
-         *     ind = (Math.random() * pokemon.size()) % pokemon.size();
-         *     if (ashTurn) {
-         *         AshPokemon.add(pokemon.remove(ind));
-         *         ashTurn = false;
-         *     } else {
-         *         GaryPokemon.add(pokemon.remove(ind));
-         *         ashTurn = true;
-         *     }
-         * }
-         * ashTurn = true;
-         */
-        
-        Pokemon mewtwo = new Mewtwo();
-		//Pokemon ashPoke = pokemon.remove(15);
-        addObject(mewtwo, 120, 300);
-        Pokemon blastoise = new Blastoise();
-        addObject(blastoise, 680, 300);
-        
-        ArrayList AshPokemon = new ArrayList();
-        AshPokemon.add(mewtwo);
-		//AshPokemon.add(ashPoke);
-        ArrayList GaryPokemon = new ArrayList();
-        GaryPokemon.add(blastoise);
-        
+        addObject(AshPokemon.get(0), 150, 250);
+        addObject(GaryPokemon.get(0), 650, 250);
         Ash = new Trainer(AshPokemon, "Ash");
         Gary = new Trainer(GaryPokemon, "Gary");
         addObject(Ash, 160, 475);
@@ -94,13 +89,16 @@ public class PokemonWorld extends World
         attImg1 = new Image();
         attImg2 = new Image();
         attImg3 = new Image();
-        attImg4 = new Image();        
-        
+        attImg4 = new Image();
+        pokImg1 = new Image();
+        pokImg2 = new Image();
+        pokImg3 = new Image();
+        pokImg4 = new Image();
+        pokImg5 = new Image();
+        pokImg6 = new Image();
     }
+    
     public void act() {
-        
-        //addObject(Ash, 160, 475);
-        
         MouseInfo mouse = Greenfoot.getMouseInfo();
         
         Stats AshStats;
@@ -111,137 +109,213 @@ public class PokemonWorld extends World
         Attack AshAttack = null;
         Attack GaryAttack = null;
         
-        //While trainers haven't blacked out yet
-        if (Ash.getCurrentPokemon().isAlive() && Gary.getCurrentPokemon().isAlive()) {
-            if (playerAction == 0) {
-                if (mouse != null) {
-                    if(ashTurn && mouse.getClickCount() == 1 && mouse.getX() > 50 && mouse.getX() < 160 && mouse.getY() > 460 && mouse.getY() < 490){
+        int x = 35, y = 400;
+        if (playerAction == 0) {
+            if (mouse != null) {
+                if(ashTurn) {
+                    if(mouse.getClickCount() == 1 && mouse.getX() > 50 && mouse.getX() < 160 && mouse.getY() > 460 && mouse.getY() < 490){
                         playerAction = 1;
                         displayAttacks(Ash);
-                        System.out.println("Clicked fight!!");
-                    } 
-                    else if (!AI && !ashTurn && mouse.getClickCount() == 1 && mouse.getX() < worldWidth - 160 && mouse.getX() > worldWidth - 270 && 
-                     mouse.getY() > 460 && mouse.getY() < 490) {
+                    }
+                    else if(mouse.getClickCount() == 1 && mouse.getX() > 50 && mouse.getX() < 160 && mouse.getY() > 490 && mouse.getY() < 520) {
+                        playerAction = 2;
+                        displayPokemon(Ash);
+                        drawPokemon(x, y);
+                    }
+                } else {
+                    if (!ashTurn && mouse.getClickCount() == 1 && mouse.getX() < worldWidth - 160 && mouse.getX() > worldWidth - 270 && mouse.getY() > 460 && mouse.getY() < 490) {
                         playerAction = 1;
                         displayAttacks(Gary);
-                        System.out.println("Clicked fight!!");
-                    } 
-                    else if(AI && !ashTurn) {
-                        playerAction = 1;
                     }
-                    else if(false) { //Choose Pokemon and display them
-                        displayPokemon(Ash);
+                    else if(mouse.getClickCount() == 1 && mouse.getX() < worldWidth - 160 && mouse.getX() > worldWidth - 270 && mouse.getY() > 490 && mouse.getY() < 520) {
                         playerAction = 2;
+                        x = worldWidth - 325;
+                        displayPokemon(Gary);
+                        drawPokemon(x, y);
                     }
+               }
+                /*if(ashTurn && mouse.getClickCount() == 1 && mouse.getX() > 50 && mouse.getX() < 160 && mouse.getY() > 460 && mouse.getY() < 490){
+                    playerAction = 1;
+                    displayAttacks(Ash);
+                } 
+                else if (!AI && !ashTurn && mouse.getClickCount() == 1 && mouse.getX() < worldWidth - 160 && mouse.getX() > worldWidth - 270 && 
+                 mouse.getY() > 460 && mouse.getY() < 490) {
+                    playerAction = 1;
+                    displayAttacks(Gary);
+                    System.out.println("Clicked fight!!");
+                } 
+                else if(AI && !ashTurn) {
+                    playerAction = 1;
                 }
-            }
-
-            if (playerAction == 1) {
-                if (ashTurn) {
-                    AshAttack = chooseAttack(Ash);
-                } else {
-                    GaryAttack = chooseAttack(Gary);
-                }
-                //System.out.println("Choosing attack");
-                if(ashTurn && AshAttack != null) {
-                    playerAction = 3;
-                    System.out.println("Ash: " + AshAttack.getName());
-                }
-                else if (!AI && !ashTurn && GaryAttack != null) {
-                    playerAction = 3;
-                    System.out.println("Gary: " + GaryAttack.getName());
-                }
-                //AI
-                else if (AI && !ashTurn) {
-                    playerAction = 3;
-                }
-            }
-           // System.out.println("~~");
-            if(playerAction == 3) {
-                //enemyAttack = Gary.attack(); //Add AI for choosing attacks. This will always choose Hydro
-                AshStats = Ash.getCurrentPokemon().getStats();
-                GaryStats = Gary.getCurrentPokemon().getStats();
-                
-                if (ashTurn) {
-                    System.out.println("Attacking with: " + AshAttack.getName());
-                    AshDamage = this.getDamage(AshStats, GaryStats, AshAttack);
-                    if (new String(AshAttack.getName()).equals(new String("Sand Attack"))) {
-                        GaryStats.setAccuracy(GaryStats.getAccuracy() - 0.1);
-                        if (GaryStats.getAccuracy() < 0.5) {
-                            GaryStats.setAccuracy(0.5);
-                            System.out.println("Accuracy cannot be lowered anymore.");
-                        }
-                    }
-                    else if (isHit(AshStats, GaryStats, AshAttack)) {
-                        GaryStats.setHP(GaryStats.getHP() - (int)AshDamage);
-                    }
-                    else {
-                        System.out.println(Ash.getCurrentPokemon().getName() + "'s Attack Missed!");
-                    }
-                }
-                else if (!AI){
-                    System.out.println("Attacking with: " + GaryAttack.getName());
-                    if (isHit(GaryStats, AshStats, GaryAttack)) {
-                        GaryDamage = this.getDamage(GaryStats, AshStats, GaryAttack);
-                        AshStats.setHP(AshStats.getHP() - (int)GaryDamage);
-                    }
-                    else {
-                        System.out.println(Gary.getCurrentPokemon().getName() + "'s Attack Missed!");
-                    }
-                }
-                else if(AI){
-                    if (isHit(GaryStats, AshStats, GaryAttack)) {
-                        GaryDamage = this.getDamage(GaryStats, AshStats, GaryAttack);
-                        AshStats.setHP(AshStats.getHP() - (int)GaryDamage);
-                    }
-                    else {
-                        System.out.println(Gary.getCurrentPokemon().getName() + "'s Attack Missed!");
-                    }
-                }
-                System.out.println("Mewtwo : " + AshStats.getHP());
-                System.out.println("Blastoise : " + GaryStats.getHP());
-                playerAction = 0;
-                
-                clearAttack();  
-                if (ashTurn) {
-                    removeObject(Ash);
-                    ashTurn = false;
-                } else {
-                    removeObject(Gary);
-                    ashTurn = true;
-                }
-                
-                if (AshStats.getHP() <= 0) {
-                    System.out.println("Trainer 2 Wins!");
-                    Ash.getCurrentPokemon().getImage().clear();
-                    Greenfoot.stop();
-                }
-                else if (GaryStats.getHP() <= 0) {
-                    System.out.println("Trainer 1 Wins!");
-                    Gary.getCurrentPokemon().getImage().clear();
-                    Greenfoot.stop();
-                }
-                else {
-                    if (ashTurn)
-                        addObject(Ash, 160, 475);
-                    else
-                        addObject(Gary, worldWidth - 160, 475);
-                }
+                else if(false) { //Choose Pokemon and display them
+                    displayPokemon(Ash);
+                    playerAction = 2;
+                }*/
             }
         }
-        //If blackout/victory stuff
+
+        if (playerAction == 1) {
+            if (ashTurn) {
+                AshAttack = chooseAttack(Ash);
+            } else {
+                GaryAttack = chooseAttack(Gary);
+            }
+            //System.out.println("Choosing attack");
+            if(ashTurn && AshAttack != null) {
+                playerAction = 3;
+                System.out.println(Ash.getCurrentPokemon().getName() + " uses " + AshAttack.getName() + "!");
+            }
+            else if (!AI && !ashTurn && GaryAttack != null) {
+                playerAction = 3;
+                System.out.println(Gary.getCurrentPokemon().getName() + " uses " + GaryAttack.getName() + "!");
+            }
+            //AI
+            else if (AI && !ashTurn) {
+                playerAction = 3;
+            }
+        }
+
+        if(playerAction == 2) {
+            int ind;
+            Pokemon p, p2;
+            ind = choosePokemon();
+            if (ind != -1) {
+                if (ashTurn) {
+                    p2 = Ash.getCurrentPokemon();
+                    p = Ash.changePokemon(ind);
+                    if (p == null)
+                        System.out.println(Ash.getAllPokemon().get(ind).getName() + " has fainted! Choose another!");
+                    else {
+                        System.out.println("Ash brings back " + p2.getName() + " and takes out " + p.getName() + "!");
+                        removeObject(p2);
+                        addObject(p, 150, 250);
+                        
+                        clearPokemon();
+                        removeObject(Ash);
+                        ashTurn = false;
+                        addObject(Gary, worldWidth - 160, 475);
+                        playerAction = 0;
+                    }
+                } else {
+                    p2 = Gary.getCurrentPokemon();
+                    p = Gary.changePokemon(ind);
+                    if (p == null)
+                        System.out.println(Gary.getAllPokemon().get(ind).getName() + " has fainted! Choose another!");
+                    else {
+                        System.out.println("Gary brings back " + p2.getName() + " and takes out " + p.getName() + "!");
+                        removeObject(p2);
+                        addObject(p, 650, 250);
+                        
+                        clearPokemon();
+                        removeObject(Gary);
+                        ashTurn = true;
+                        addObject(Ash, 160, 475);
+                        playerAction = 0;
+                    }
+                }
+            }
+            
+        }
         
-       // 
+        if(playerAction == 3) {
+            //enemyAttack = Gary.attack(); //Add AI for choosing attacks. This will always choose Hydro
+            AshStats = Ash.getCurrentPokemon().getStats();
+            GaryStats = Gary.getCurrentPokemon().getStats();
+            
+            if (ashTurn) {
+                AshDamage = this.getDamage(AshStats, GaryStats, AshAttack);
+                if (new String(AshAttack.getName()).equals(new String("Sand Attack"))) {
+                    GaryStats.setAccuracy(GaryStats.getAccuracy() - 0.1);
+                    if (GaryStats.getAccuracy() < 0.5) {
+                        GaryStats.setAccuracy(0.5);
+                        System.out.println("Accuracy cannot be lowered anymore!");
+                    }
+                }
+                else if (isHit(AshStats, GaryStats, AshAttack)) {
+                    GaryStats.setHP(Math.max(0, GaryStats.getHP() - (int)AshDamage));
+                }
+                else {
+                    System.out.println(Ash.getCurrentPokemon().getName() + "'s Attack Missed!");
+                }
+            }
+            else if (!AI){
+                if (new String(GaryAttack.getName()).equals(new String("Sand Attack"))) {
+                    AshStats.setAccuracy(AshStats.getAccuracy() - 0.1);
+                    if (AshStats.getAccuracy() < 0.5) {
+                        AshStats.setAccuracy(0.5);
+                        System.out.println("Accuracy cannot be lowered anymore!");
+                    }
+                    else
+                        System.out.println(Ash.getCurrentPokemon().getName() + "'s accuracy has been lowered!");
+                }
+                if (isHit(GaryStats, AshStats, GaryAttack)) {
+                    GaryDamage = this.getDamage(GaryStats, AshStats, GaryAttack);
+                    AshStats.setHP(Math.max(0, AshStats.getHP() - (int)GaryDamage));
+                }
+                else {
+                    System.out.println(Gary.getCurrentPokemon().getName() + "'s Attack Missed!");
+                }
+            }
+            else if(AI){
+                if (isHit(GaryStats, AshStats, GaryAttack)) {
+                    GaryDamage = this.getDamage(GaryStats, AshStats, GaryAttack);
+                    AshStats.setHP(Math.max(0, AshStats.getHP() - (int)GaryDamage));
+                }
+                else {
+                    System.out.println(Gary.getCurrentPokemon().getName() + "'s Attack Missed!");
+                }
+            }
+            System.out.println(Ash.getCurrentPokemon().getName() + " HP : " + AshStats.getHP());
+            System.out.println(Gary.getCurrentPokemon().getName() + " HP : " + GaryStats.getHP());
+            playerAction = 0;
+            
+            clearAttack();  
+            if (ashTurn) {
+                removeObject(Ash);
+                ashTurn = false;
+            } else {
+                removeObject(Gary);
+                ashTurn = true;
+            }
+            
+            if (AshStats.getHP() <= 0) {
+                System.out.println(Ash.getCurrentPokemon().getName() + " has fainted!");
+                Ash.getCurrentPokemon().getImage().clear();
+                if (blackout(Ash)) {
+                    System.out.println("Gary Wins!");
+                    Greenfoot.stop();
+                } else {
+                    playerAction = 2;
+                    displayPokemon(Ash);
+                    drawPokemon(x, y);
+                }
+            }
+            else if (GaryStats.getHP() <= 0) {
+                System.out.println(Gary.getCurrentPokemon().getName() + " has fainted!");
+                Gary.getCurrentPokemon().getImage().clear();
+                if (blackout(Gary)) {
+                    System.out.println("Ash Wins!");
+                    Greenfoot.stop();
+                } else {
+                    playerAction = 2;
+                    x = worldWidth - 325;
+                    displayPokemon(Gary);
+                    drawPokemon(x, y);
+                }
+            }
+            else {
+                if (ashTurn)
+                    addObject(Ash, 160, 475);
+                else
+                    addObject(Gary, worldWidth - 160, 475);
+            }
+        }
     }
     
     public int getDamage(Stats s1, Stats s2, Attack a) {
-        if(a == null)
-            System.out.println("It's null");
         double lev = 110.0 / 250.0;
         double rat = (double)s1.getAttack() / (double)s2.getDefense();
-        
-        
-        
+
         return ((int)(lev * rat * a.getBase())) + 2;
     }
     
@@ -266,6 +340,28 @@ public class PokemonWorld extends World
         drawAttack(trainer);
     }
     
+    public void displayPokemon(Trainer trainer) {
+        ArrayList<Pokemon> pokemon = trainer.getAllPokemon();
+        GreenfootImage img = new GreenfootImage("images/" + pokemon.get(0).getName() + "Sprite.png");
+        img.scale(60,60);
+        pokImg1.setImage(img);
+        img = new GreenfootImage("images/" + pokemon.get(1).getName() + "Sprite.png");
+        img.scale(60,60);
+        pokImg2.setImage(img);
+        img = new GreenfootImage("images/" + pokemon.get(2).getName() + "Sprite.png");
+        img.scale(60,60);
+        pokImg3.setImage(img);
+        img = new GreenfootImage("images/" + pokemon.get(3).getName() + "Sprite.png");
+        img.scale(60,60);
+        pokImg4.setImage(img);
+        img = new GreenfootImage("images/" + pokemon.get(4).getName() + "Sprite.png");
+        img.scale(60,60);
+        pokImg5.setImage(img);
+        img = new GreenfootImage("images/" + pokemon.get(5).getName() + "Sprite.png");
+        img.scale(60,60);
+        pokImg6.setImage(img);
+    }
+    
     public void drawAttack(Trainer trainer) {
         addObject(attImg1, trainer.getX() - 55, trainer.getY() + 30);
         addObject(attImg2, trainer.getX() + 55, trainer.getY() + 30);
@@ -273,11 +369,29 @@ public class PokemonWorld extends World
         addObject(attImg4, trainer.getX() - 55, trainer.getY() - 10);    
     }
     
+    public void drawPokemon(int x, int y) {
+        addObject(pokImg1, x, y);
+        addObject(pokImg2, x += 60, y);
+        addObject(pokImg3, x += 60, y);
+        addObject(pokImg4, x += 60, y);
+        addObject(pokImg5, x += 60, y);
+        addObject(pokImg6, x += 60, y);
+    }
+    
     public void clearAttack() {
         removeObject(attImg1);
         removeObject(attImg2);
         removeObject(attImg3);
         removeObject(attImg4);
+    }
+    
+    public void clearPokemon() {
+        removeObject(pokImg1);
+        removeObject(pokImg2);
+        removeObject(pokImg3);
+        removeObject(pokImg4);
+        removeObject(pokImg5);
+        removeObject(pokImg6);
     }
 
     public Attack chooseAttack(Trainer trainer) {
@@ -297,13 +411,40 @@ public class PokemonWorld extends World
             return null;
         }
         else {
-			double random = Math.random();
-			int r = (int) (random * 100) % 4;
+            double random = Math.random();
+            int r = (int) (random * 100) % 4;
             return trainer.getCurrentPokemon().getAttacks().get(r);
         }
     }
     
-    public void displayPokemon(Trainer trainer) {
-        
+    public int choosePokemon() {
+        if (Greenfoot.mouseClicked(pokImg1)) {
+            return 0;
+        }
+        else if (Greenfoot.mouseClicked(pokImg2)) {
+            return 1;
+        }
+        else if (Greenfoot.mouseClicked(pokImg3)) {
+            return 2;
+        }
+        else if (Greenfoot.mouseClicked(pokImg4)) {
+            return 3;
+        }
+        else if (Greenfoot.mouseClicked(pokImg5)) {
+            return 4;
+        }
+        else if (Greenfoot.mouseClicked(pokImg6)) {
+            return 5;
+        }
+        return -1;
+    }
+    
+    public boolean blackout(Trainer trainer) {
+        ArrayList<Pokemon> p = trainer.getAllPokemon();
+        for (int i = 0; i < p.size(); i++) {
+            if (p.get(i).isAlive())
+                return false;
+        }
+        return true;
     }
 }
