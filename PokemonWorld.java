@@ -146,10 +146,6 @@ public class PokemonWorld extends World
                 } 
                 else if(AI && !ashTurn) {
                     playerAction = 1;
-                }
-                else if(false) { //Choose Pokemon and display them
-                    displayPokemon(Ash);
-                    playerAction = 2;
                 }*/
             }
         }
@@ -363,10 +359,14 @@ public class PokemonWorld extends World
     }
     
     public void drawAttack(Trainer trainer) {
-        addObject(attImg1, trainer.getX() - 55, trainer.getY() + 30);
-        addObject(attImg2, trainer.getX() + 55, trainer.getY() + 30);
-        addObject(attImg3, trainer.getX() + 55, trainer.getY() - 10);
-        addObject(attImg4, trainer.getX() - 55, trainer.getY() - 10);    
+        attImg1.getImage().scale(attImg1.getImage().getWidth() - 25,attImg1.getImage().getHeight());
+        attImg2.getImage().scale(attImg2.getImage().getWidth() - 25,attImg2.getImage().getHeight());
+        attImg3.getImage().scale(attImg3.getImage().getWidth() - 25,attImg3.getImage().getHeight());
+        attImg4.getImage().scale(attImg4.getImage().getWidth() - 25,attImg4.getImage().getHeight());
+        addObject(attImg1, trainer.getX() - 65, trainer.getY() + 30);
+        addObject(attImg2, trainer.getX() + 70, trainer.getY() + 30);
+        addObject(attImg3, trainer.getX() + 70, trainer.getY() - 10);
+        addObject(attImg4, trainer.getX() - 65, trainer.getY() - 10);    
     }
     
     public void drawPokemon(int x, int y) {

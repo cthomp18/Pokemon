@@ -1,9 +1,9 @@
-public class Watergun extends Attack 
+public class WaterGun extends Attack 
 {
-    public Watergun()
+    public WaterGun()
     {
         //Attack(name, base, type, baseAccuracy);
-        super("Watergun", 50.0, new PokeType("Water"), 1.0);
+        super("Water Gun", 50.0, new PokeType("Water"), 1.0);
     }
 }
 

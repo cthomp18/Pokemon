@@ -14,7 +14,7 @@ public class Lapras extends Pokemon
    private GreenfootImage LaprasImage;
    
     public Lapras() {
-        super(Arrays.asList(new Watergun(), new AuroraBeam(), new Tackle(), new HydroPump()),
+        super(Arrays.asList(new WaterGun(), new AuroraBeam(), new Tackle(), new HydroPump()),
          new PokeType("Water"), new Stats(215, 115, 110, 1.0, 1.0), "Lapras");
         LaprasImage = new GreenfootImage(getImage());
     }

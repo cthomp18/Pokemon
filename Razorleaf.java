@@ -1,9 +1,9 @@
-public class Razorleaf extends Attack 
+public class RazorLeaf extends Attack 
 {
-    public Razorleaf()
+    public RazorLeaf()
     {
         //Attack(name, base, type, baseAccuracy);
-        super("Razorleaf", 50.0, new PokeType("Leaf"), 1.0);
+        super("Razor Leaf", 50.0, new PokeType("Leaf"), 1.0);
     }
 }
 
