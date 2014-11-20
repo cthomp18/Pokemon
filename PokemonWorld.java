@@ -74,15 +74,15 @@ public class PokemonWorld extends World
          * ashTurn = true;
          */
         
-        //Pokemon mewtwo = new Mewtwo();
-		Pokemon ashPoke = pokemon.remove(3);
-        addObject(ashPoke, 120, 300);
+        Pokemon mewtwo = new Mewtwo();
+		//Pokemon ashPoke = pokemon.remove(15);
+        addObject(mewtwo, 120, 300);
         Pokemon blastoise = new Blastoise();
         addObject(blastoise, 680, 300);
         
         ArrayList AshPokemon = new ArrayList();
-        //AshPokemon.add(mewtwo);
-		AshPokemon.add(ashPoke);
+        AshPokemon.add(mewtwo);
+		//AshPokemon.add(ashPoke);
         ArrayList GaryPokemon = new ArrayList();
         GaryPokemon.add(blastoise);
         
