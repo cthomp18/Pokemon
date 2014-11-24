@@ -35,6 +35,7 @@ public class PokemonWorld extends World
     Image pokImg6;
    
     boolean ashTurn;
+    boolean ashPokeFaint;
     int worldWidth;    
 
     Boolean AI = true;
@@ -79,6 +80,7 @@ public class PokemonWorld extends World
             }
         }
         ashTurn = true;
+        ashPokeFaint = false;
         
         addObject(AshPokemon.get(0), 150, 250);
         addObject(GaryPokemon.get(0), 650, 250);
@@ -185,9 +187,14 @@ public class PokemonWorld extends World
                         addObject(p, 150, 250);
                         
                         clearPokemon();
-                        removeObject(Ash);
-                        ashTurn = false;
-                        addObject(Gary, worldWidth - 160, 475);
+                        if (ashPokeFaint) {
+                            ashPokeFaint = false;
+                        } else {
+                            removeObject(Ash);
+                            ashTurn = false;
+                            if (!AI)
+                                addObject(Gary, worldWidth - 160, 475);
+                        }
                         playerAction = 0;
                     }
                 } else {
@@ -279,6 +286,7 @@ public class PokemonWorld extends World
                     System.out.println("Gary Wins!");
                     Greenfoot.stop();
                 } else {
+                    ashPokeFaint = true;
                     playerAction = 2;
                     displayPokemon(Ash);
                     drawPokemon(x, y);
@@ -292,16 +300,19 @@ public class PokemonWorld extends World
                     Greenfoot.stop();
                 } else {
                     playerAction = 2;
-                    x = worldWidth - 325;
-                    displayPokemon(Gary);
-                    drawPokemon(x, y);
+                    if (!AI) {
+                        x = worldWidth - 325;
+                        displayPokemon(Gary);
+                        drawPokemon(x, y);
+                    }
                 }
             }
             else {
                 if (ashTurn)
                     addObject(Ash, 160, 475);
                 else
-                    addObject(Gary, worldWidth - 160, 475);
+                    if (!AI)
+                        addObject(Gary, worldWidth - 160, 475);
             }
         }
     }

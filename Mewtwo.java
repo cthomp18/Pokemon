@@ -16,7 +16,7 @@ public class Mewtwo extends Pokemon
    
     public Mewtwo() {
         super(Arrays.asList(new Psychic(), new Psybeam(), new Slash(), new Tackle()),
-         new PokeType("Psychic"), new Stats(190, 135, 120, 1.0, 1.0), "Mewtwo");
+         new PsychicType(), new Stats(190, 135, 120, 1.0, 1.0), "Mewtwo");
         MewtwoImage = new GreenfootImage(getImage());
     }
 }

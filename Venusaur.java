@@ -15,7 +15,7 @@ public class Venusaur extends Pokemon
    
     public Venusaur() {
         super(Arrays.asList(new RazorLeaf(), new SolarBeam(), new Tackle(), new SandAttack()),
-         new PokeType("Grass"), new Stats(160, 115, 120, 1.0, 1.0), "Venusaur");
+         new GrassType(), new Stats(160, 115, 120, 1.0, 1.0), "Venusaur");
         VenusaurImage = new GreenfootImage(getImage());
     }
 }

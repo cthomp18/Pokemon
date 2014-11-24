@@ -14,6 +14,6 @@ public class SandAttack extends Attack
      */
     public SandAttack()
     {
-        super("Sand Attack", 0.0, new PokeType("Normal"), 1.0);
+        super("Sand Attack", 0.0, new NormalType(), 1.0);
     }
 }

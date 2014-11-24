@@ -13,6 +13,6 @@ public class Tackle extends Attack
      * Constructor for objects of class Tackle
      */
     public Tackle() {
-        super("Tackle", 50, new PokeType("Normal"), 1.0);
+        super("Tackle", 50, new NormalType(), 1.0);
     }
 }

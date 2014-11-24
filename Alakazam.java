@@ -15,7 +15,7 @@ public class Alakazam extends Pokemon
    
     public Alakazam() {
         super(Arrays.asList(new Psychic(), new Psybeam(), new SandAttack(), new MegaPunch()),
-         new PokeType("Psychic"), new Stats(140, 80, 75, 1.0, 1.0), "Alakazam");
+         new PsychicType(), new Stats(140, 80, 75, 1.0, 1.0), "Alakazam");
         AlakazamImage = new GreenfootImage(getImage());
     }
 }

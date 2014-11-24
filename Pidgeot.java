@@ -15,7 +15,7 @@ public class Pidgeot extends Pokemon
    
     public Pidgeot() {
         super(Arrays.asList(new Peck(), new DrillPeck(), new SandAttack(), new Tackle()),
-         new PokeType("Flying"), new Stats(165, 110, 105, 1.0, 1.0), "Pidgeot");
+         new FlyingType(), new Stats(165, 110, 105, 1.0, 1.0), "Pidgeot");
         PidgeotImage = new GreenfootImage(getImage());
     }
 }

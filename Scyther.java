@@ -15,7 +15,7 @@ public class Scyther extends Pokemon
    
     public Scyther() {
         super(Arrays.asList(new RazorLeaf(), new SolarBeam(), new Tackle(), new SandAttack()),
-         new PokeType("Grass"), new Stats(150, 140, 110, 1.0, 1.0), "Scyther");
+         new GrassType(), new Stats(150, 140, 110, 1.0, 1.0), "Scyther");
         ScytherImage = new GreenfootImage(getImage());
     }
 }

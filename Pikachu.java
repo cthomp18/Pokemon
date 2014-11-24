@@ -15,7 +15,7 @@ public class Pikachu extends Pokemon
    
     public Pikachu() {
         super(Arrays.asList(new Thundershock(), new Thunder(), new MegaPunch(), new Tackle()),
-         new PokeType("Electric"), new Stats(120, 75, 60, 1.2, 1.2), "Pikachu");
+         new ElectricType(), new Stats(120, 75, 60, 1.2, 1.2), "Pikachu");
         PikachuImage = new GreenfootImage(getImage());
     }
 }

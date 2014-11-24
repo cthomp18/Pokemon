@@ -13,6 +13,6 @@ public class Slash extends Attack
      * Constructor for objects of class Slash
      */
     public Slash() {
-        super("Slash", 70, new PokeType("Normal"), 1.0);
+        super("Slash", 70, new NormalType(), 1.0);
     }
 }

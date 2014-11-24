@@ -15,7 +15,7 @@ public class Onix extends Pokemon
    
     public Onix() {
         super(Arrays.asList(new RockThrow(), new Earthquake(), new Tackle(), new SandAttack()),
-         new PokeType("Rock"), new Stats(120, 75, 190, 1.0, 1.0), "Onix");
+         new RockType(), new Stats(120, 75, 190, 1.0, 1.0), "Onix");
         OnixImage = new GreenfootImage(getImage());
     }
 }

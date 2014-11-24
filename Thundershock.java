@@ -3,7 +3,7 @@ public class Thundershock extends Attack
     public Thundershock()
     {
         //Attack(name, base, type, baseAccuracy);
-        super("Thundershock", 70.0, new PokeType("Electric"), 1.0);
+        super("Thundershock", 70.0, new ElectricType(), 1.0);
     }
 }
 

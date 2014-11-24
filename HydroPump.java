@@ -10,6 +10,6 @@ public class HydroPump extends Attack
      * Constructor for objects of class HydroPump
      */
     public HydroPump() {
-        super("HydroPump", 110, new PokeType("Water"), .8);
+        super("HydroPump", 110, new WaterType(), .8);
     }
 }

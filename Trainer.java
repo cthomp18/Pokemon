@@ -10,7 +10,7 @@ public class Trainer extends Actor
 {
     ArrayList<Pokemon> pokemon;
     int currentPokemon;
-	String name;
+    String name;
     
     /**
      * Act - do whatever the Trainer wants to do. This method is called whenever
@@ -18,12 +18,12 @@ public class Trainer extends Actor
      */
     public Trainer(ArrayList<Pokemon> pokemon, String name) {
         this.pokemon = pokemon;
-		this.name = name;
+        this.name = name;
     }
-	
-	public String getName() {
-		return this.name;
-	}
+    
+    public String getName() {
+        return this.name;
+    }
     
     public Attack attack() {
         return getAttackChoice();
@@ -37,7 +37,7 @@ public class Trainer extends Actor
         MouseInfo mouse = Greenfoot.getMouseInfo();
         //if(mouse.getX() > 5)
         // GreenfootImage attack1 = new GreenfootImage(".jpg");
-       return new Attack("Hydro", 1.0, new PokeType("Water?"), 1.0);
+       return new Attack("Hydro", 1.0, new WaterType(), 1.0);
     }
     
     //Returns current Pokmeon
@@ -57,7 +57,13 @@ public class Trainer extends Actor
     
     //Switches the currentPokemon index
     public Pokemon changePokemon(int newPokemon) {
-        currentPokemon = newPokemon;
+        Pokemon p = pokemon.get(newPokemon);
+        
+        if (!p.isAlive())
+            return null;
+        else
+            this.currentPokemon = newPokemon;
+            
         return getCurrentPokemon();
     }
     

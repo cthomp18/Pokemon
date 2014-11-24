@@ -13,6 +13,6 @@ public class Psychic extends Attack
      * Constructor for objects of class Psychic
      */
     public Psychic() {
-        super("Psychic", 90, new PokeType("Psychic"), 1.0);
+        super("Psychic", 90, new PsychicType(), 1.0);
     }
 }

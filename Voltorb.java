@@ -15,7 +15,7 @@ public class Voltorb extends Pokemon
    
     public Voltorb() {
         super(Arrays.asList(new Thundershock(), new Thunder(), new Tackle(), new SandAttack()),
-         new PokeType("Electric"), new Stats(125, 60, 80, 1.0, 1.0), "Voltorb");
+         new ElectricType(), new Stats(125, 60, 80, 1.0, 1.0), "Voltorb");
         VoltorbImage = new GreenfootImage(getImage());
     }
 }

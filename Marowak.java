@@ -15,7 +15,7 @@ public class Marowak extends Pokemon
    
     public Marowak() {
         super(Arrays.asList(new RockThrow(), new Earthquake(), new SandAttack(), new Tackle()),
-         new PokeType("Rock"), new Stats(155, 110, 140, 1.0, 1.0), "Marowak");
+         new RockType(), new Stats(155, 110, 140, 1.0, 1.0), "Marowak");
         MarowakImage = new GreenfootImage(getImage());
     }
 }

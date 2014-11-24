@@ -15,7 +15,7 @@ public class Dragonite extends Pokemon
    
     public Dragonite() {
         super(Arrays.asList(new Peck(), new DrillPeck(), new SandAttack(), new Tackle()),
-         new PokeType("Flying"), new Stats(170, 165, 125, 1.0, 1.0), "Dragonite");
+         new FlyingType(), new Stats(170, 165, 125, 1.0, 1.0), "Dragonite");
         DragoniteImage = new GreenfootImage(getImage());
     }
 }

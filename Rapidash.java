@@ -15,7 +15,7 @@ public class Rapidash extends Pokemon
    
     public Rapidash() {
         super(Arrays.asList(new Flamethrower(), new FireBlast(), new Tackle(), new SandAttack()),
-         new PokeType("Fire"), new Stats(150, 130, 100, 1.0, 1.0), "Rapidash");
+         new FireType(), new Stats(150, 130, 100, 1.0, 1.0), "Rapidash");
         RapidashImage = new GreenfootImage(getImage());
     }
 }

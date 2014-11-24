@@ -16,7 +16,7 @@ public class Jigglypuff extends Pokemon
     public Jigglypuff() {
         super(Arrays.asList(new MegaPunch(), new SandAttack(), new Tackle(), new Slash()),
 		 //TODO: Can we make evade and accuracy above 1.0?
-         new PokeType("Normal"), new Stats(200, 75, 55, 1.2, 1.2), "Jigglypuff");
+         new NormalType(), new Stats(200, 75, 55, 1.2, 1.2), "Jigglypuff");
         JigglypuffImage = new GreenfootImage(getImage());
     }
 }
