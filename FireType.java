@@ -9,6 +9,6 @@ import java.util.*;
 public class FireType extends PokeType 
 {
     public FireType() {
-        super("Fire", Arrays.asList("Normal"), Arrays.asList("Normal"));
+        super("Fire", Arrays.asList("Grass"), Arrays.asList("Fire", "Water", "Rock"));
     }
 }

@@ -9,6 +9,6 @@ import java.util.*;
 public class RockType extends PokeType 
 {
     public RockType() {
-        super("Rock", Arrays.asList("Normal"), Arrays.asList("Normal"));
+        super("Rock", Arrays.asList("Fire", "Flying"), Arrays.asList(""));
     }
 }

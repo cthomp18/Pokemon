@@ -9,6 +9,6 @@ import java.util.*;
 public class WaterType extends PokeType 
 {
     public WaterType() {
-        super("Water", Arrays.asList("Normal"), Arrays.asList("Normal"));
+        super("Water", Arrays.asList("Fire", "Rock"), Arrays.asList("Water", "Grass"));
     }
 }

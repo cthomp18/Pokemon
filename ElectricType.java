@@ -9,6 +9,6 @@ import java.util.*;
 public class ElectricType extends PokeType 
 {
     public ElectricType() {
-        super("Electric", Arrays.asList("Normal"), Arrays.asList("Normal"));
+        super("Electric", Arrays.asList("Water", "Flying"), Arrays.asList("Electric", "Grass"));
     }
 }
