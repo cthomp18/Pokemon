@@ -9,6 +9,6 @@ import java.util.*;
 public class PsychicType extends PokeType 
 {
     public PsychicType() {
-        super("Psychic", Arrays.asList(""), Arrays.asList("Psychic"));
+        super("Psychic", Arrays.asList("Electric"), Arrays.asList("Psychic", "Flying"));
     }
 }

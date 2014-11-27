@@ -10,6 +10,6 @@ import java.util.*;
 public class NormalType extends PokeType 
 {
     public NormalType() {
-        super("Normal", Arrays.asList(""), Arrays.asList("Rock"));
+        super("Normal", Arrays.asList(""), Arrays.asList(""));
     }
 }

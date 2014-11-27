@@ -9,6 +9,6 @@ import java.util.*;
 public class FlyingType extends PokeType 
 {
     public FlyingType() {
-        super("Flying", Arrays.asList("Grass"), Arrays.asList("Electric", "Rock"));
+        super("Flying", Arrays.asList("Psychic", "Grass"), Arrays.asList("Rock"));
     }
 }

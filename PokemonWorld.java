@@ -282,7 +282,9 @@ public class PokemonWorld extends World
                 else if(AI){
                     if (isHit(GaryStats, AshStats, GaryAttack)) {
                         if (GaryAttack.getType().isStrong(Ash.getCurrentPokemon().getType())) {
+							System.out.println("Gary damage was "+ GaryDamage);
                             GaryDamage *= 2;
+							System.out.println("Gary damage is "+ GaryDamage);
                             System.out.println("It's super effective!");
                         }
                         else if (GaryAttack.getType().isWeak(Ash.getCurrentPokemon().getType())) {
