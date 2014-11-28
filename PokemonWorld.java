@@ -221,134 +221,83 @@ public class PokemonWorld extends World
         
         if(playerAction == 3) {
             //enemyAttack = Gary.attack(); //Add AI for choosing attacks. This will always choose Hydro
-            AshStats = Ash.getCurrentPokemon().getStats();
-            GaryStats = Gary.getCurrentPokemon().getStats();
             
             if (ashTurn) {
-                AshDamage = this.getDamage(AshStats, GaryStats, AshAttack);
+				//my damage I'm about to give, attack already chosen
+				calculateDamage(Ash, Gary, AshAttack);
                     
-                if (new String(AshAttack.getName()).equals(new String("Sand Attack"))) {
-                    GaryStats.setAccuracy(GaryStats.getAccuracy() - 0.1);
-                    if (GaryStats.getAccuracy() < 0.5) {
-                        GaryStats.setAccuracy(0.5);
-                        System.out.println("Accuracy cannot be lowered anymore!");
-                    }
-                }
-                else if (isHit(AshStats, GaryStats, AshAttack)) {
-                    if (AshAttack.getType().isStrong(Gary.getCurrentPokemon().getType())) {
-                        AshDamage *= 2;
-                        System.out.println("It's super effective!");
-                    }
-                    else if (AshAttack.getType().isWeak(Gary.getCurrentPokemon().getType())) {
-                        AshDamage = (int)(AshDamage * 0.5);
-                        if (!(new String(AshAttack.getName()).equals(new String("Sand Attack"))))
-                            System.out.println("It's not very effective...");
-                    }
-                    GaryStats.setHP(Math.max(0, GaryStats.getHP() - (int)AshDamage));
-                }
-                else {
-                    System.out.println(Ash.getCurrentPokemon().getName() + "'s Attack Missed!");
-                }
             }
             else {
-                GaryDamage = this.getDamage(GaryStats, AshStats, GaryAttack);
-                
-                if (!AI){
-                    if (new String(GaryAttack.getName()).equals(new String("Sand Attack"))) {
-                        AshStats.setAccuracy(AshStats.getAccuracy() - 0.1);
-                        if (AshStats.getAccuracy() < 0.5) {
-                            AshStats.setAccuracy(0.5);
-                            System.out.println("Accuracy cannot be lowered anymore!");
-                        }
-                        else
-                            System.out.println(Ash.getCurrentPokemon().getName() + "'s accuracy has been lowered!");
-                    }
-                    if (isHit(GaryStats, AshStats, GaryAttack)) {
-                        if (GaryAttack.getType().isStrong(Ash.getCurrentPokemon().getType())) {
-                            GaryDamage *= 2;
-                            System.out.println("It's super effective!");
-                        }
-                        else if (GaryAttack.getType().isWeak(Ash.getCurrentPokemon().getType())) {
-                            GaryDamage = (int)(GaryDamage * 0.5);
-                            if (!(new String(GaryAttack.getName()).equals(new String("Sand Attack"))))
-                                System.out.println("It's not very effective...");
-                        }
-                        AshStats.setHP(Math.max(0, AshStats.getHP() - (int)GaryDamage));
-                    }
-                    else {
-                        System.out.println(Gary.getCurrentPokemon().getName() + "'s Attack Missed!");
-                    }
-                }
-                else if(AI){
-                    if (isHit(GaryStats, AshStats, GaryAttack)) {
-                        if (GaryAttack.getType().isStrong(Ash.getCurrentPokemon().getType())) {
-							System.out.println("Gary damage was "+ GaryDamage);
-                            GaryDamage *= 2;
-							System.out.println("Gary damage is "+ GaryDamage);
-                            System.out.println("It's super effective!");
-                        }
-                        else if (GaryAttack.getType().isWeak(Ash.getCurrentPokemon().getType())) {
-                            GaryDamage = (int)(GaryDamage * 0.5);
-                            if (!(new String(GaryAttack.getName()).equals(new String("Sand Attack"))))
-                                System.out.println("It's not very effective...");
-                        }
-                        AshStats.setHP(Math.max(0, AshStats.getHP() - (int)GaryDamage));
-                    }
-                    else {
-                        System.out.println(Gary.getCurrentPokemon().getName() + "'s Attack Missed!");
-                    }
-                }
-            }
-            System.out.println(Ash.getCurrentPokemon().getName() + " HP : " + AshStats.getHP());
-            System.out.println(Gary.getCurrentPokemon().getName() + " HP : " + GaryStats.getHP());
-            playerAction = 0;
-            
-            clearAttack();  
-            if (ashTurn) {
-                removeObject(Ash);
-                ashTurn = false;
-            } else {
-                removeObject(Gary);
-                ashTurn = true;
-            }
-            
-            if (AshStats.getHP() <= 0) {
-                System.out.println(Ash.getCurrentPokemon().getName() + " has fainted!");
-                Ash.getCurrentPokemon().getImage().clear();
-                if (blackout(Ash)) {
-                    System.out.println("Gary Wins!");
-                    Greenfoot.stop();
-                } else {
-                    ashPokeFaint = true;
-                    playerAction = 2;
-                    displayPokemon(Ash);
-                    drawPokemon(x, y);
-                }
-            }
-            else if (GaryStats.getHP() <= 0) {
-                System.out.println(Gary.getCurrentPokemon().getName() + " has fainted!");
-                Gary.getCurrentPokemon().getImage().clear();
-                if (blackout(Gary)) {
-                    System.out.println("Ash Wins!");
-                    Greenfoot.stop();
-                } else {
-                    playerAction = 2;
-                    if (!AI) {
-                        x = worldWidth - 325;
-                        displayPokemon(Gary);
-                        drawPokemon(x, y);
-                    }
-                }
-            }
-            else {
-                if (ashTurn)
-                    addObject(Ash, 160, 475);
-                else
-                    if (!AI)
-                        addObject(Gary, worldWidth - 160, 475);
-            }
-        }
-    }
+				calculateDamage(Gary, Ash, GaryAttack);
+			}
+			/*else if(AI){
+				if (isHit(GaryStats, AshStats, GaryAttack)) {
+					if (GaryAttack.getType().isStrong(Ash.getCurrentPokemon().getType())) {
+						System.out.println("Gary damage was "+ GaryDamage);
+						GaryDamage *= 2;
+						System.out.println("Gary damage is "+ GaryDamage);
+						System.out.println("It's super effective!");
+					}
+					else if (GaryAttack.getType().isWeak(Ash.getCurrentPokemon().getType())) {
+						GaryDamage = (int)(GaryDamage * 0.5);
+						if (!(new String(GaryAttack.getName()).equals(new String("Sand Attack"))))
+							System.out.println("It's not very effective...");
+					}
+					AshStats.setHP(Math.max(0, AshStats.getHP() - (int)GaryDamage));
+				}
+				else {
+					System.out.println(Gary.getCurrentPokemon().getName() + "'s Attack Missed!");
+				}
+			}
+		}*/
+		playerAction = 0;
+		
+		clearAttack();  
+		if (ashTurn) {
+			removeObject(Ash);
+			ashTurn = false;
+		} else {
+			removeObject(Gary);
+			ashTurn = true;
+		}
+		
+		if (AshStats.getHP() <= 0) {
+			System.out.println(Ash.getCurrentPokemon().getName() + " has fainted!");
+			Ash.getCurrentPokemon().getImage().clear();
+			if (blackout(Ash)) {
+				System.out.println("Gary Wins!");
+				Greenfoot.stop();
+			} else {
+				ashPokeFaint = true;
+				playerAction = 2;
+				displayPokemon(Ash);
+				drawPokemon(x, y);
+			}
+		}
+		else if (GaryStats.getHP() <= 0) {
+			System.out.println(Gary.getCurrentPokemon().getName() + " has fainted!");
+			Gary.getCurrentPokemon().getImage().clear();
+			if (blackout(Gary)) {
+				System.out.println("Ash Wins!");
+				Greenfoot.stop();
+			} else {
+				playerAction = 2;
+				if (!AI) {
+					x = worldWidth - 325;
+					displayPokemon(Gary);
+					drawPokemon(x, y);
+				}
+			}
+		}
+		else {
+			if (ashTurn)
+				addObject(Ash, 160, 475);
+			else
+				if (!AI)
+					addObject(Gary, worldWidth - 160, 475);
+		}
+	}
+}
     
     public int getDamage(Stats s1, Stats s2, Attack a) {
         double lev = 110.0 / 250.0;
@@ -502,4 +451,35 @@ public class PokemonWorld extends World
         }
         return true;
     }
+
+	public void calculateDamage(Trainer local, Trainer enemy, Attack attack) {
+		Stats localStats = local.getCurrentPokemon().getStats();
+		Stats enemyStats = enemy.getCurrentPokemon().getStats();
+		int localDamage = this.getDamage(localStats, enemyStats, attack);
+
+		if (new String(attack.getName()).equals(new String("Sand Attack"))) {
+			enemyStats.setAccuracy(enemyStats.getAccuracy() - 0.1);
+			if (enemyStats.getAccuracy() < 0.5) {
+				enemyStats.setAccuracy(0.5);
+				System.out.println("Accuracy cannot be lowered anymore!");
+			}
+		}
+		else if (isHit(localStats, enemyStats, attack)) {
+			if (attack.getType().isStrong(enemy.getCurrentPokemon().getType())) {
+				localDamage *= 2;
+				System.out.println("It's super effective!");
+			}
+			else if (attack.getType().isWeak(enemy.getCurrentPokemon().getType())) {
+				localDamage = (int)(localDamage * 0.5);
+				if (!(new String(attack.getName()).equals(new String("Sand Attack"))))
+					System.out.println("It's not very effective...");
+			}
+			enemyStats.setHP(Math.max(0, enemyStats.getHP() - (int)localDamage));
+		}
+		else {
+			System.out.println(Ash.getCurrentPokemon().getName() + "'s Attack Missed!");
+		}
+		System.out.println(local.getCurrentPokemon().getName() + " HP : " + localStats.getHP());
+		System.out.println(enemy.getCurrentPokemon().getName() + " HP : " + enemyStats.getHP());
+	}
 }
