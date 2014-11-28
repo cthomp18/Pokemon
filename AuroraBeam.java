@@ -14,6 +14,6 @@ public class AuroraBeam extends Attack
      */
     public AuroraBeam()
     {
-        super("Aurora Beam", 65.0, new WaterType(), 1.0);
+        super("Aurora Beam", 75.0, new WaterType(), .8);
     }
 }

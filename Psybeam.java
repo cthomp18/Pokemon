@@ -14,6 +14,6 @@ public class Psybeam extends Attack
      */
     public Psybeam()
     {
-        super("Psybeam", 65.0, new PsychicType(), 1.0);
+        super("Psybeam", 60.0, new PsychicType(), 1.0);
     }
 }

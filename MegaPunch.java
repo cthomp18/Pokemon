@@ -12,6 +12,6 @@ public class MegaPunch extends Attack
     public MegaPunch()
     {
         //Attack(name, base, type, baseAccuracy);
-        super("Mega Punch", 80.0, new NormalType(), .85);
+        super("Mega Punch", 80.0, new NormalType(), .75);
     }
 }

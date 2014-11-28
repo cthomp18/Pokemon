@@ -13,6 +13,7 @@ public abstract class Pokemon extends Actor
     ArrayList<Attack> attacks; //its a list of 4
     PokeType type;
     Stats stats;
+	final int maxHP;
     
     public Pokemon(List<Attack> attacks, PokeType type, Stats stats, String name){
         this.attacks = new ArrayList<Attack>();
@@ -22,6 +23,7 @@ public abstract class Pokemon extends Actor
         this.type = type;
         this.stats = stats;
         this.name = name;
+		this.maxHP = stats.getHP();
     }
    
     public String getName() {
@@ -36,6 +38,9 @@ public abstract class Pokemon extends Actor
     public Stats getStats() {
         return this.stats;
     }
+	public int getMaxHP() {
+		return this.maxHP;
+	}
     
     public boolean isAlive() {
         if (this.stats.getHP() > 0)
