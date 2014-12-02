@@ -273,9 +273,28 @@ public class Trainer extends Actor
 		pokedex.discover(pokemon, WEAK_AGAINST, typ);
 	}
 
+	public void superEffective(String pokemon) {
+		String myType = getCurrentPokemon().getType().getName();
+		//TODO: change to be real logic
+		pokedex.discover(pokemon, WEAK_AGAINST, myType);
+	}
+
+	//pokemon is strong against typ
 	public void notEffective(String pokemon, String typ) {
 		pokedex.discover(pokemon, STRONG_AGAINST, typ);
 		int otherOption = otherOption(pokemon);
+		debug(pokemon+" is strong against "+typ);
+		if(otherOption != -1) {
+			choice = NEXT_POKE;
+			pokeChoice = otherOption;
+		}
+	}
+
+	public void notEffective(String pokemon) {
+		String myType = getCurrentPokemon().getType().getName();
+		pokedex.discover(pokemon, STRONG_AGAINST, myType);
+		int otherOption = otherOption(pokemon);
+		debug(pokemon+" is strong against "+myType);
 		if(otherOption != -1) {
 			choice = NEXT_POKE;
 			pokeChoice = otherOption;
@@ -287,25 +306,32 @@ public class Trainer extends Actor
 		else
 			return 2;
 	}
+	//THis is only code that chooses next poke
 	public int choosePokemon(Trainer gary) {
 		ArrayList<Pokemon> ps = getAllPokemon();
 		Pokemon p;
 		int r = -1;
 		double rand;
+		//switching due to non-effective
 		if(pokeChoice != -1) {
+			debug("We are switching due to non-effective");
+			r = pokeChoice;
 			//reset so you don't think you still know who to send out 
 			pokeChoice = -1;
-			return pokeChoice;
 		}
-		do {
-			rand = Math.random();
-			r = (int) (rand * 6) % 6;
-			p = ps.get(r);
-		} while (!p.isAlive() && r != getCurrentPokemonIndex());
+		else {
+			do {
+				rand = Math.random();
+				r = (int) (rand * 6) % 6;
+				p = ps.get(r);
+			} while (!p.isAlive() && r != getCurrentPokemonIndex());
+		}
 		choice = FIGHT;
 		return r;
 	} 
 	//TODO: If we have other pokemon or theyre not all weak against him, dont pick same guy, dont bring back and take back out, instant release
+	//If we know who's weak against, release.
+	//Else: If it's not enemy's strength, they're alive, and it's not same guy on floor, release
 	public int otherOption(String enemy) {
 		ArrayList<Pokemon> ps = getAllPokemon();
 		ArrayList<String> weakAgainst = pokedex.getWeakAgainst(enemy);
@@ -325,8 +351,10 @@ public class Trainer extends Actor
 		for(int j = 0; j < ps.size(); j++) {
 			if(ps.get(j).isAlive() && getCurrentPokemonIndex() != j) {
 				if(strongAgainst != null) {
+					for(String s : strongAgainst)
+						debug(s);
 					if(!strongAgainst.contains(ps.get(j).getType().getName())) {
-						debug("This pokemon is alive and we don't know if it's weak against enemy");
+						debug("This pokemon is alive and we don't know if "+ps.get(j).getType().getName()+"'s weak against enemy");
 						return j;
 					}
 				}
