@@ -1,5 +1,7 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.*;
+import java.lang.Math;
+
 /**
  * Write a description of class Trainer here.
  * 
@@ -10,6 +12,12 @@ public class Trainer extends Actor
 {
 	static final int WEAK_AGAINST = 1;
 	static final int STRONG_AGAINST = 2;
+    static final int FIGHT = 1;
+    static final int NEXT_POKE= 2;
+	boolean debug = true;
+	
+	int pokeChoice = -1;
+	int choice;
     ArrayList<Pokemon> pokemon;
     int currentPokemon;
     String name;
@@ -20,6 +28,20 @@ public class Trainer extends Actor
 		boolean updateFlag = false;
 		public PokeInfo() {
 			allPokes = new ArrayList<Poke>();
+			/*
+			discover("Pikachu", WEAK_AGAINST, "Fire");
+			discover("Mewtwo", WEAK_AGAINST, "Fire");
+			discover("Lapras", WEAK_AGAINST, "Fire");
+			discover("Arcanine", WEAK_AGAINST, "Fire");
+			discover("Onix", WEAK_AGAINST, "Fire");
+			discover("Scyther", WEAK_AGAINST, "Fire");
+			discover("Alakazam", WEAK_AGAINST, "Fire");
+			discover("Rapidash", WEAK_AGAINST, "Fire");
+			discover("Dragonite", WEAK_AGAINST, "Fire");
+			discover("Voltorb", WEAK_AGAINST, "Fire");
+			discover("Blastoise", WEAK_AGAINST, "Fire");
+			discover("Pidgeot", WEAK_AGAINST, "Fire");
+			*/
 		}
 		public void discover(String name, int isWeakness, String typ) {
 			for(Poke p : allPokes) {
@@ -41,6 +63,36 @@ public class Trainer extends Actor
 					return p;
 				}
 			}
+			return null;
+		}
+		public ArrayList<String> getStrongAgainst(String name) {
+			Poke s = searchPoke(name);
+			debug("Searching for strengths of "+name);
+			if(s != null) {
+				debug("Found the poke");
+				if(!s.getStrongAgainst().isEmpty())
+					return s.getStrongAgainst();
+				else
+					debug("Strengths empty");
+					
+			}
+			else
+				debug("SearchPoke came up with nothin");
+			return null;
+		}
+		public ArrayList<String> getWeakAgainst(String name) {
+			Poke s = searchPoke(name);
+			debug("Searching for weakensses for "+name);
+			if(s != null) {
+				debug("Found the poke");
+				if(!s.getWeakAgainst().isEmpty())
+					return s.getWeakAgainst();
+				else
+					debug("Weaknesses empty");
+					
+			}
+			else
+				debug("SearchPoke came up with nothin");
 			return null;
 		}
 	}
@@ -79,6 +131,7 @@ public class Trainer extends Actor
     public Trainer(ArrayList<Pokemon> pokemon, String name) {
         this.pokemon = pokemon;
         this.name = name;
+		this.choice = FIGHT;
     }
     
     public String getName() {
@@ -101,7 +154,7 @@ public class Trainer extends Actor
 		int maxHP = enemy.getMaxHP();
 		double percentageHealth, random;
 		percentageHealth = (double)currHP / (double)maxHP;
-		System.out.println("percentage health - " + percentageHealth);
+		debug("percentage health - " + percentageHealth);
 
 		if(enemyPoke != null) {
 			for(String weakness : enemyPoke.getWeakAgainst()) {
@@ -138,7 +191,7 @@ public class Trainer extends Actor
 			random = Math.random();
 			//Eg - 70% health has .2 chance of sand attack
 			if(random < percentageHealth) {
-				System.out.println("Sand!");
+				debug("Sand!");
 				return currPoke.getAttacks().get(sand);
 			}
 			else
@@ -155,7 +208,7 @@ public class Trainer extends Actor
 	public Attack smartChoice(ArrayList<Attack> possibleAtts, double percentHealth, Pokemon local) {
 		ArrayList<Double> accList = new ArrayList<Double>();
 		int myHP = local.getStats().getHP();
-		System.out.println("myHP is " + myHP);
+		debug("myHP is " + myHP);
 		int index, numOptions;
 		double rand;
 
@@ -163,27 +216,27 @@ public class Trainer extends Actor
 			accList.add(a.getBaseAccuracy());
 		}
 		index = accList.indexOf(Collections.min(accList));
-		System.out.println("Worst accuracy is "+accList.get(index));
+		debug("Worst accuracy is "+accList.get(index));
 
 		//If they have a lot of health or I'm almost dead
 		if(percentHealth > 0.5) {
 			if (Math.random() < 0.5) {
-				System.out.println("Go for it! Best Attack!!!");
+				debug("Go for it! Best Attack!!!");
 				return possibleAtts.get(index);
 			}
 		} 
 		else if(percentHealth > 0.2 && myHP < 25) {
-			System.out.println("I'm almost dead! Best Attack!!!");
+			debug("I'm almost dead! Best Attack!!!");
 			return possibleAtts.get(index);
 		}
-		System.out.println("Number options initial="+accList.size());
+		debug("Number options initial="+accList.size());
 		//Take out strong inaccurate move
 		if(accList.size() != 1) {
 			possibleAtts.remove(index);
 		}
 		rand = Math.random();
 		numOptions = possibleAtts.size();
-		System.out.println("Meh, number options after best eliminated = " + numOptions);
+		debug("Meh, number options after best eliminated = " + numOptions);
 		index = (int) (rand * numOptions) % numOptions;
 		return possibleAtts.get(index);
 		
@@ -222,10 +275,72 @@ public class Trainer extends Actor
 
 	public void notEffective(String pokemon, String typ) {
 		pokedex.discover(pokemon, STRONG_AGAINST, typ);
+		int otherOption = otherOption(pokemon);
+		if(otherOption != -1) {
+			choice = NEXT_POKE;
+			pokeChoice = otherOption;
+		}
 	}
-    
-    /**/
-    public void act() {
-        
-    }
+	public int nextMove() {
+		if(choice == FIGHT) 
+			return 1;
+		else
+			return 2;
+	}
+	public int choosePokemon(Trainer gary) {
+		ArrayList<Pokemon> ps = getAllPokemon();
+		Pokemon p;
+		int r = -1;
+		double rand;
+		if(pokeChoice != -1) {
+			//reset so you don't think you still know who to send out 
+			pokeChoice = -1;
+			return pokeChoice;
+		}
+		do {
+			rand = Math.random();
+			r = (int) (rand * 6) % 6;
+			p = ps.get(r);
+		} while (!p.isAlive() && r != getCurrentPokemonIndex());
+		choice = FIGHT;
+		return r;
+	} 
+	//TODO: If we have other pokemon or theyre not all weak against him, dont pick same guy, dont bring back and take back out, instant release
+	public int otherOption(String enemy) {
+		ArrayList<Pokemon> ps = getAllPokemon();
+		ArrayList<String> weakAgainst = pokedex.getWeakAgainst(enemy);
+		ArrayList<String> strongAgainst = pokedex.getStrongAgainst(enemy);
+		//check for it's weakness
+		if(weakAgainst != null) {
+			for(String wa : weakAgainst) {
+				for(int i = 0; i < ps.size(); i++) {
+					if(ps.get(i).isAlive() && ps.get(i).getType().getName() == wa && getCurrentPokemonIndex() != i)
+						return i;
+				}
+			}
+			debug("Have no weakness type");
+		}
+		//At this point we either don't have weakness type or don't know it.
+		//Bring out a different type if you have it
+		for(int j = 0; j < ps.size(); j++) {
+			if(ps.get(j).isAlive() && getCurrentPokemonIndex() != j) {
+				if(strongAgainst != null) {
+					if(!strongAgainst.contains(ps.get(j).getType().getName())) {
+						debug("This pokemon is alive and we don't know if it's weak against enemy");
+						return j;
+					}
+				}
+				else
+					return j;
+			}
+		}
+		
+		debug("Unsure what it's weak against, or have none and no one else is alive, don't switch");
+		return -1;
+	}
+	public void debug(String str) {
+		if(name == "Gary" && debug == true)
+			System.out.println(str);
+	}
 }
+    
