@@ -89,7 +89,7 @@ public class PokemonWorld extends World
         System.out.println("Ash sends out " + AshPokemon.get(0).getName() + "!");
         System.out.println("Gary sends out " + GaryPokemon.get(0).getName() + "!");
         Ash = new Trainer(AshPokemon, "Ash");
-        Gary = new Trainer(GaryPokemon, "Gary");
+        Gary = new CameronTrainer(GaryPokemon, "Gary");
         garyChoice = Gary.nextMove();
         addObject(Ash, 160, 475);
         

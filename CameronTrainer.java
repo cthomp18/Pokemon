@@ -112,19 +112,10 @@ public class CameronTrainer extends Trainer
         }
     }
     
-    public Trainer(ArrayList<Pokemon> pokemon, String name) {
-        this.pokemon = pokemon;
-        this.name = name;
-        this.choice = FIGHT;
+    public CameronTrainer(ArrayList<Pokemon> pokemon, String name) {
+		super(pokemon, name);
     }
     
-    public String getName() {
-        return this.name;
-    }
-    
-    public String action() {
-        return "Attack";
-    }
     
     public Attack getAttackChoice(Pokemon enemy, Pokemon local) {
         String enemyName = enemy.getName();
@@ -224,33 +215,6 @@ public class CameronTrainer extends Trainer
         index = (int) (rand * numOptions) % numOptions;
         return possibleAtts.get(index);
         
-    }
-    
-    //Returns current Pokmeon
-    public Pokemon getCurrentPokemon() {
-        return pokemon.get(currentPokemon);
-    }
-    
-    //Returns index of current Pokemon
-    public int getCurrentPokemonIndex() {
-        return currentPokemon;
-    }
-    
-    //Returns the trainers list of Pokemon
-    public ArrayList<Pokemon> getAllPokemon() {
-        return pokemon;
-    }
-    
-    //Switches the currentPokemon index
-    public Pokemon changePokemon(int newPokemon) {
-        Pokemon p = pokemon.get(newPokemon);
-        
-        if (!p.isAlive())
-            return null;
-        else
-            this.currentPokemon = newPokemon;
-            
-        return getCurrentPokemon();
     }
     
     //Gary pokemon is strong against enemy
