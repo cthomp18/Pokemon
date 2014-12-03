@@ -70,12 +70,8 @@ public class PokemonWorld extends World
 
         ArrayList<Pokemon> AshPokemon = new ArrayList<Pokemon>();
         ArrayList<Pokemon> GaryPokemon = new ArrayList<Pokemon>();
-		AshPokemon.add(pokemon.remove(1));
-		AshPokemon.add(pokemon.remove(0));
-		GaryPokemon.add(pokemon.remove(3));
-		GaryPokemon.add(pokemon.remove(0));
         int ind;
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 12; i++) {
             ind = (int)((Math.random() * pokemon.size()) % pokemon.size());
             if (ashTurn) {
                 AshPokemon.add(pokemon.remove(ind));
@@ -204,6 +200,7 @@ public class PokemonWorld extends World
                             if (!AI)
                                 addObject(Gary, worldWidth - 160, 475);
                         }
+						Gary.opponentChangedTo(p);
                         playerAction = 0;
                     }
                 } else {
@@ -261,6 +258,7 @@ public class PokemonWorld extends World
                 }
             }
             else if (GaryStats.getHP() <= 0) {
+				Gary.saveOpponent(Ash.getCurrentPokemon().getName());
                 System.out.println(Gary.getCurrentPokemon().getName() + " has fainted!");
                 Gary.getCurrentPokemon().getImage().clear();
                 if (blackout(Gary)) {
@@ -447,15 +445,14 @@ public class PokemonWorld extends World
                 System.out.println("It's super effective!");
                 localDamage *= 2;
                 local.superEffective(enemyPokemon, attack.getType().getName());
-				//one argument means look at own type
-				enemy.notEffective(localPokemon);
+				enemy.opponentSuperEffective(localPokemon, attack.getType().getName());
             }
             else if (attack.getType().isWeak(enemy.getCurrentPokemon().getType())) {
                 localDamage = (int)(localDamage * 0.5);
                 if (!(new String(attack.getName()).equals(new String("Sand Attack")))) {
                     System.out.println("It's not very effective...");
 					local.notEffective(enemyPokemon, attack.getType().getName());
-					enemy.superEffective(localPokemon);
+					enemy.opponentNotEffective(localPokemon);
 				}
             }
             enemyStats.setHP(Math.max(0, enemyStats.getHP() - (int)localDamage));
