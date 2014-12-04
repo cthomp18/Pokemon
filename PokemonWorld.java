@@ -121,11 +121,11 @@ public class PokemonWorld extends World
             if (mouse != null) {
                 if(ashTurn) {
                     if(mouse.getClickCount() == 1 && mouse.getX() > 50 && mouse.getX() < 160 && mouse.getY() > 460 && mouse.getY() < 490){
-                        playerAction = 1;
+                        playerAction = CHOOSE_FIGHT;
                         displayAttacks(Ash);
                     }
                     else if(mouse.getClickCount() == 1 && mouse.getX() > 50 && mouse.getX() < 160 && mouse.getY() > 490 && mouse.getY() < 520) {
-                        playerAction = 2;
+                        playerAction = POKE_CHANGE;
                         displayPokemon(Ash);
                         drawPokemon(x, y);
                     }
@@ -142,7 +142,6 @@ public class PokemonWorld extends World
                     }
 					else if (AI) {
 						playerAction = garyChoice;
-						System.out.println("****** playerAction = "+playerAction);
 					}
                }
             }

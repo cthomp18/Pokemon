@@ -10,18 +10,16 @@ import java.lang.Math;
  */
 public class CameronTrainer extends Trainer 
 {
-    //TODO: Dont assume two-way roads with weaknesses
     static final int WEAK_AGAINST = 1;
     static final int STRONG_AGAINST = 2;
+    static final int WEAK_TOWARDS = 3;
+    static final int STRONG_TOWARDS = 4;
     static final int FIGHT = 1;
     static final int NEXT_POKE= 2;
-    boolean debug = true;
+    boolean debug = false;
     
     int pokeChoice = -1;
-    int choice;
-    ArrayList<Pokemon> pokemon;
-    int currentPokemon;
-    String name;
+    int choice = FIGHT;
     PokeInfo pokedex = new PokeInfo();
 
     private class PokeInfo { 
@@ -30,17 +28,17 @@ public class CameronTrainer extends Trainer
         public PokeInfo() {
             allPokes = new ArrayList<Poke>();
         }
-        public void discover(String name, int isWeakness, String typ) {
+        public void discover(String name, int weakStrongEnum, String typ) {
             for(Poke p : allPokes) {
                 if(p.name == name) {
-                    p.addInfo(typ, isWeakness);
+                    p.addInfo(typ, weakStrongEnum);
                     updateFlag = true;
                 }
             }
             //we need to add new info
             if(updateFlag == false) {
                 Poke newP = new Poke(name);
-                newP.addInfo(typ, isWeakness);
+                newP.addInfo(typ, weakStrongEnum);
                 allPokes.add(newP);
             }
         }
@@ -80,6 +78,34 @@ public class CameronTrainer extends Trainer
                 debug("SearchPoke came up with nothin");
             return null;
         }
+        public ArrayList<String> getWeakTowards(String name) {
+            Poke s = searchPoke(name);
+            debug("Searching for weakensses for "+name);
+            if(s != null) {
+                if(!s.getWeakTowards().isEmpty())
+                    return s.getWeakTowards();
+                else
+                    debug("Weaknesses empty");
+                    
+            }
+            else
+                debug("SearchPoke came up with nothin");
+            return null;
+        }
+        public ArrayList<String> getStrongTowards(String name) {
+            Poke s = searchPoke(name);
+            debug("Searching for strengths of "+name);
+            if(s != null) {
+                if(!s.getStrongTowards().isEmpty())
+                    return s.getStrongTowards();
+                else
+                    debug("Strengths empty");
+                    
+            }
+            else
+                debug("SearchPoke came up with nothin");
+            return null;
+        }
         
     }
 
@@ -87,13 +113,17 @@ public class CameronTrainer extends Trainer
         public String name;
         private ArrayList<String> strongAgainst;
         private ArrayList<String> weakAgainst;
+        private ArrayList<String> weakTowards;
+        private ArrayList<String> strongTowards;
         public Poke(String name) {
             this.name = name;
             this.strongAgainst = new ArrayList<String>();
             this.weakAgainst = new ArrayList<String>();
+            this.strongTowards = new ArrayList<String>();
+            this.weakTowards = new ArrayList<String>();
         }
-        public void addInfo(String t, int isWeakness) {
-            if(isWeakness == WEAK_AGAINST) {
+        public void addInfo(String t, int weakStrongEnum) {
+            if(weakStrongEnum == WEAK_AGAINST) {
                 if(!this.weakAgainst.contains(t))
                     debug("NEWSFLASH! - "+name+" is weak against "+t);
                     this.weakAgainst.add(t);
@@ -110,10 +140,17 @@ public class CameronTrainer extends Trainer
         public ArrayList<String> getStrongAgainst() {
             return this.strongAgainst;
         }
+        public ArrayList<String> getStrongTowards() {
+            return this.strongTowards;
+        }
+        public ArrayList<String> getWeakTowards() {
+            return this.weakTowards;
+        }
     }
     
     public CameronTrainer(ArrayList<Pokemon> pokemon, String name) {
 		super(pokemon, name);
+		debug("test");
     }
     
     
@@ -181,6 +218,7 @@ public class CameronTrainer extends Trainer
     }
 
     public Attack smartChoice(ArrayList<Attack> possibleAtts, double percentHealth, Pokemon local) {
+		debug("hi");
         ArrayList<Double> accList = new ArrayList<Double>();
         int myHP = local.getStats().getHP();
         debug("myHP is " + myHP);
@@ -341,7 +379,7 @@ public class CameronTrainer extends Trainer
 		pokeChoice = otherOption(opp);
 	}
     public void debug(String str) {
-        if(name == "Gary" && debug == true)
+        if(this.getName() == "Gary" && debug == true)
             System.out.println(str);
     }
 }

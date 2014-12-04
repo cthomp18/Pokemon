@@ -46,13 +46,18 @@ public class Trainer extends Actor
             
         return getCurrentPokemon();
     }
+
+	//TODO: OVERWRITE
     public int nextMove() {
-		return 0;
+		return -1;
 	}
-	public int choosePokemon(Trainer Ash) {
-		return 0;
+
+	//TODO: OVERWRITE
+	public int choosePokemon(Trainer Gary) {
+		return -2;
 	}
-	public Attack getAttackChoice(Pokemon A, Pokemon G) {
+	//TODO: OVERWRITE
+	public Attack getAttackChoice(Pokemon enemy, Pokemon Gary) {
 		return new Attack("Hydro", 1.0, new WaterType(), 1.0);
 	}
 	public void saveOpponent(String opp) {}
