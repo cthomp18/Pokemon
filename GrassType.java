@@ -9,6 +9,6 @@ import java.util.*;
 public class GrassType extends PokeType 
 {
     public GrassType() {
-        super("Grass", Arrays.asList("Water", "Rock"), Arrays.asList("Fire", "Grass", "Flying"));
+        super("Grass", Arrays.asList("Water", "Rock"), Arrays.asList("Fire", "Flying"));
     }
 }

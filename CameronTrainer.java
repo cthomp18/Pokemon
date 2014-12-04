@@ -10,13 +10,14 @@ import java.lang.Math;
  */
 public class CameronTrainer extends Trainer 
 {
+	//TODO: First move is own type, make sure you know if you missed
     static final int WEAK_AGAINST = 1;
     static final int STRONG_AGAINST = 2;
     static final int WEAK_TOWARDS = 3;
     static final int STRONG_TOWARDS = 4;
     static final int FIGHT = 1;
     static final int NEXT_POKE= 2;
-    boolean debug = false;
+    boolean debug = true;
     
     int pokeChoice = -1;
     int choice = FIGHT;
@@ -38,9 +39,10 @@ public class CameronTrainer extends Trainer
             //we need to add new info
             if(updateFlag == false) {
                 Poke newP = new Poke(name);
-                newP.addInfo(typ, weakStrongEnum);
                 allPokes.add(newP);
+                newP.addInfo(typ, weakStrongEnum);
             }
+			updateFlag = false;
         }
         public Poke searchPoke(String name) {
             for(Poke p : allPokes) {
@@ -128,10 +130,20 @@ public class CameronTrainer extends Trainer
                     debug("NEWSFLASH! - "+name+" is weak against "+t);
                     this.weakAgainst.add(t);
             }
-            else {
+            else if(weakStrongEnum == STRONG_AGAINST) {
                 if(!this.strongAgainst.contains(t))
                     debug("NEWSFLASH! - "+name+" is strong against "+t);
                     this.strongAgainst.add(t);
+            }
+            else if(weakStrongEnum == WEAK_TOWARDS) {
+                if(!this.weakTowards.contains(t))
+                    debug("NEWSFLASH! - "+name+" is weak toward "+t);
+                    this.weakTowards.add(t);
+            }
+            else {
+                if(!this.strongTowards.contains(t))
+                    debug("NEWSFLASH! - "+name+" is strong toward "+t);
+                    this.strongTowards.add(t);
             }
         }
         public ArrayList<String> getWeakAgainst() {
@@ -150,7 +162,6 @@ public class CameronTrainer extends Trainer
     
     public CameronTrainer(ArrayList<Pokemon> pokemon, String name) {
 		super(pokemon, name);
-		debug("test");
     }
     
     
@@ -166,7 +177,6 @@ public class CameronTrainer extends Trainer
         int maxHP = enemy.getMaxHP();
         double percentageHealth, random;
         percentageHealth = (double)currHP / (double)maxHP;
-        debug("percentage health - " + percentageHealth);
 
         if(enemyPoke != null) {
             for(String weakness : enemyPoke.getWeakAgainst()) {
@@ -197,13 +207,12 @@ public class CameronTrainer extends Trainer
         //They have sand attack
         if(sand != -1) {
             if(percentageHealth > .85)
-                percentageHealth -= 0.6;
+                percentageHealth -= 0.55;
             else
                 percentageHealth -= 0.5;
             random = Math.random();
             //Eg - 70% health has .2 chance of sand attack
             if(random < percentageHealth) {
-                debug("Sand!");
                 return currPoke.getAttacks().get(sand);
             }
             else
@@ -218,10 +227,8 @@ public class CameronTrainer extends Trainer
     }
 
     public Attack smartChoice(ArrayList<Attack> possibleAtts, double percentHealth, Pokemon local) {
-		debug("hi");
         ArrayList<Double> accList = new ArrayList<Double>();
         int myHP = local.getStats().getHP();
-        debug("myHP is " + myHP);
         int index, numOptions;
         double rand;
 
@@ -229,79 +236,69 @@ public class CameronTrainer extends Trainer
             accList.add(a.getBaseAccuracy());
         }
         index = accList.indexOf(Collections.min(accList));
-        debug("Worst accuracy is "+accList.get(index));
 
         //If they have a lot of health or I'm almost dead
-        if(percentHealth > 0.5) {
-            if (Math.random() < 0.5) {
-                debug("Go for it! Best Attack!!!");
+        if(percentHealth > 0.25) {
+            if (Math.random() < 0.5 || myHP < 25) {
                 return possibleAtts.get(index);
             }
         } 
-        else if(percentHealth > 0.2 && myHP < 25) {
-            debug("I'm almost dead! Best Attack!!!");
-            return possibleAtts.get(index);
-        }
         debug("Number options initial="+accList.size());
         //Take out strong inaccurate move
         if(accList.size() != 1) {
             possibleAtts.remove(index);
         }
+		//prefer own move
+		for(Attack a : possibleAtts) {
+			if(getCurrentPokemon().getType().getName() == a.getType().getName())
+				return a;
+		}
         rand = Math.random();
         numOptions = possibleAtts.size();
-        debug("Meh, number options after best eliminated = " + numOptions);
+        debug("Meh, number options after best/sand eliminated = " + numOptions);
         index = (int) (rand * numOptions) % numOptions;
         return possibleAtts.get(index);
-        
     }
-    
+    /*
+	 * Towards = Attacking
+	 * Against = Defending
+	 */ 
     //Gary pokemon is strong against enemy
-    public void superEffective(String pokemon, String typ) {
-        String garyPoke = getCurrentPokemon().getName();
-        //weak_against is more like weakness
-        pokedex.discover(pokemon, WEAK_AGAINST, typ);
-        pokedex.discover(garyPoke, STRONG_AGAINST, typ);
+    public void superEffective(String enemy, String typ) {
+		//we only know our type
+		pokedex.discover(enemy, WEAK_AGAINST, typ); 
     }
-
-    public void opponentNotEffective(String pokemon) {
+    public void opponentNotEffective(String enemy) {
         String myType = getCurrentPokemon().getType().getName();
-        //this makes me choose my type of attack against him, should be renamed 
-        //to inference and made temporary
-        pokedex.discover(pokemon, WEAK_AGAINST, myType);
+        pokedex.discover(enemy, WEAK_TOWARDS, myType);
     }
-
-    //pokemon is strong against typ. called when im NOT strong against opponent
-    public void notEffective(String pokemon, String typ) {
-        //done so that we don't switch to that type
-        pokedex.discover(pokemon, STRONG_AGAINST, typ);
-        int otherOption = otherOption(pokemon);
-        debug(pokemon+" is strong against "+typ);
+    public void notEffective(String enemy, String typ) {
+        pokedex.discover(enemy, STRONG_AGAINST, typ);
+        int otherOption = otherOption(enemy);
         if(otherOption != -1) {
             choice = NEXT_POKE;
             pokeChoice = otherOption;
         }
     }
-
-    public void opponentSuperEffective(String pokemon, String attackType) {
+    public void opponentSuperEffective(String enemy) {
         String myType = getCurrentPokemon().getType().getName();
-        String garyPoke = getCurrentPokemon().getName();
-        pokedex.discover(pokemon, STRONG_AGAINST, myType);
-        //weak_against is more like weakness
-        pokedex.discover(garyPoke, WEAK_AGAINST, attackType);
-        int otherOption = otherOption(pokemon);
-        debug(pokemon+" is strong against "+myType);
+        pokedex.discover(enemy, STRONG_TOWARDS, myType);
+        int otherOption = otherOption(enemy);
         if(otherOption != -1) {
             choice = NEXT_POKE;
             pokeChoice = otherOption;
         }
     }
     public int nextMove() {
-        if(choice == FIGHT) 
+        int currHP = getCurrentPokemon().getStats().getHP();  
+        int maxHP = getCurrentPokemon().getMaxHP();
+        double percentageHealth = (double)currHP / (double)maxHP;
+        if(choice == FIGHT || percentageHealth < .2) 
             return 1;
         else
             return 2;
     }
-    //THis is only code that chooses next poke
+    //This is only code that chooses next poke
     public int choosePokemon(Trainer gary) {
         ArrayList<Pokemon> ps = getAllPokemon();
         Pokemon p;
@@ -309,7 +306,6 @@ public class CameronTrainer extends Trainer
         double rand;
         //switching due to non-effective
         if(pokeChoice != -1) {
-            debug("We are switching due to non-effective");
             r = pokeChoice;
             //reset so you don't think you still know who to send out 
             pokeChoice = -1;
@@ -331,25 +327,49 @@ public class CameronTrainer extends Trainer
         ArrayList<Pokemon> ps = getAllPokemon();
         ArrayList<String> weakAgainst = pokedex.getWeakAgainst(enemy);
         ArrayList<String> strongAgainst = pokedex.getStrongAgainst(enemy);
+        ArrayList<String> weakTowards = pokedex.getWeakTowards(enemy);
+        ArrayList<String> strongTowards = pokedex.getStrongTowards(enemy);
+		String myType;
+		int i, j;
         //check for it's weakness
         if(weakAgainst != null) {
             for(String wa : weakAgainst) {
-                for(int i = 0; i < ps.size(); i++) {
+                for(i = 0; i < ps.size(); i++) {
                     if(ps.get(i).isAlive() && ps.get(i).getType().getName() == wa && getCurrentPokemonIndex() != i)
                         return i;
                 }
             }
             debug("Have no weakness type");
         }
+        if(weakTowards != null) {
+            for(String wt : weakTowards) {
+                for(i = 0; i < ps.size(); i++) {
+                    if(ps.get(i).isAlive() && ps.get(i).getType().getName() == wt && getCurrentPokemonIndex() != i)
+                        return i;
+                }
+            }
+            debug("Have no types he's weak towards");
+        }
         //At this point we either don't have weakness type or don't know it.
         //Bring out a different type if you have it
-        for(int j = 0; j < ps.size(); j++) {
+        for(j = 0; j < ps.size(); j++) {
             if(ps.get(j).isAlive() && getCurrentPokemonIndex() != j) {
-                if(strongAgainst != null) {
-                    for(String s : strongAgainst)
-                        debug(s);
-                    if(!strongAgainst.contains(ps.get(j).getType().getName())) {
-                        debug("This pokemon is alive and we don't know if "+ps.get(j).getType().getName()+"'s weak against enemy");
+				myType = ps.get(j).getType().getName();
+                if(strongAgainst != null && strongTowards != null) {
+                    if(!strongAgainst.contains(myType) && !strongTowards.contains(myType)) {
+                        debug("This pokemon is alive and we don't know if "+myType+"'s weak against enemy");
+                        return j;
+                    }
+                }
+                else if(strongAgainst != null) {
+                    if(!strongAgainst.contains(myType)) {
+                        debug("This pokemon is alive and we don't know if "+myType+"'s weak against enemy");
+                        return j;
+                    }
+                }
+                else if(strongTowards != null) {
+                    if(!strongTowards.contains(myType)) {
+                        debug("This pokemon is alive and we don't know if "+myType+"'s weak against enemy");
                         return j;
                     }
                 }
@@ -362,18 +382,33 @@ public class CameronTrainer extends Trainer
         return -1;
     }
     public void opponentChangedTo(Pokemon newPoke) {
-        ArrayList<String> typeStrongAgainst = pokedex.getWeakAgainst(newPoke.getName());
+        ArrayList<String> typeHeStrongToward = pokedex.getStrongTowards(newPoke.getName());
+        ArrayList<String> typeImWeakAgainst = pokedex.getWeakAgainst(getCurrentPokemon().getName());
         String currType = getCurrentPokemon().getType().getName();
-        if(typeStrongAgainst != null) {
-            for(String t : typeStrongAgainst) {
+        String enemyType = newPoke.getType().getName();
+        if(typeHeStrongToward != null) {
+            for(String t : typeHeStrongToward) {
                 if(currType == t) {
                     debug("Change! currType is "+currType+" and they are strong against us!");
-                    choice = NEXT_POKE;
                     pokeChoice = otherOption(newPoke.getName());
+					//if we have another option
+					if(pokeChoice != -1)
+						choice = NEXT_POKE;
                 }
             }
         }
+        if(typeImWeakAgainst != null) {
+			for(String wa : typeImWeakAgainst) {
+				if(enemyType == wa) {
+					debug("Change! enemy is "+enemyType+" and I am weak against them!");
+					pokeChoice = otherOption(newPoke.getName());
+					if(pokeChoice != -1)
+						choice = NEXT_POKE;
+				}
+			}
+        }
     }
+	//Opponent killed us
 	public void saveOpponent(String opp) {
 		choice = NEXT_POKE;
 		pokeChoice = otherOption(opp);

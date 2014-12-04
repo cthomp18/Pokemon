@@ -65,6 +65,6 @@ public class Trainer extends Actor
     public void superEffective(String pokemon, String typ) {}
     public void opponentNotEffective(String pokemon) {}
     public void notEffective(String pokemon, String typ) {}
-    public void opponentSuperEffective(String pokemon, String attackType) {}
+    public void opponentSuperEffective(String pokemon) {}
     
 }

@@ -217,7 +217,6 @@ public class PokemonWorld extends World
                         ashTurn = true;
                         addObject(Ash, 160, 475);
                         playerAction = 0;
-						garyChoice = Gary.nextMove();
                     }
                 }
             }
@@ -279,8 +278,8 @@ public class PokemonWorld extends World
                     if (!AI)
                         addObject(Gary, worldWidth - 160, 475);
             }
-            garyChoice = Gary.nextMove();
         }
+		garyChoice = Gary.nextMove();
     }
     
     public int getDamage(Stats s1, Stats s2, Attack a) {
@@ -444,7 +443,7 @@ public class PokemonWorld extends World
                 System.out.println("It's super effective!");
                 localDamage *= 2;
                 local.superEffective(enemyPokemon, attack.getType().getName());
-				enemy.opponentSuperEffective(localPokemon, attack.getType().getName());
+				enemy.opponentSuperEffective(localPokemon);
             }
             else if (attack.getType().isWeak(enemy.getCurrentPokemon().getType())) {
                 localDamage = (int)(localDamage * 0.5);

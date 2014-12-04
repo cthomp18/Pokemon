@@ -9,7 +9,7 @@ import java.util.*;
 public class ElectricType extends PokeType 
 {
     public ElectricType() {
-		//strongAgainst, weakAgainst
-        super("Electric", Arrays.asList("Water", "Flying"), Arrays.asList("Electric", "Grass", "Rock"));
+		//strongToward, weakToward
+        super("Electric", Arrays.asList("Water", "Flying"), Arrays.asList("Grass", "Rock"));
     }
 }
