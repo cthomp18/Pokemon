@@ -15,6 +15,10 @@ public class Trainer extends Actor
         this.pokemon = pokemon;
         this.name = name;
     }
+
+	public void replacePokemon(ArrayList<Pokemon> newPokemon) {
+		this.pokemon = newPokemon;
+	}
     
     public String getName() {
         return this.name;
