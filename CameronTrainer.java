@@ -384,6 +384,7 @@ public class CameronTrainer extends Trainer
     public void opponentChangedTo(Pokemon newPoke) {
         ArrayList<String> typeHeStrongToward = pokedex.getStrongTowards(newPoke.getName());
         ArrayList<String> typeImWeakAgainst = pokedex.getWeakAgainst(getCurrentPokemon().getName());
+        ArrayList<String> typeImWeakTowards = pokedex.getWeakTowards(getCurrentPokemon().getName());
         String currType = getCurrentPokemon().getType().getName();
         String enemyType = newPoke.getType().getName();
         if(typeHeStrongToward != null) {
@@ -401,6 +402,16 @@ public class CameronTrainer extends Trainer
 			for(String wa : typeImWeakAgainst) {
 				if(enemyType == wa) {
 					debug("Change! enemy is "+enemyType+" and I am weak against them!");
+					pokeChoice = otherOption(newPoke.getName());
+					if(pokeChoice != -1)
+						choice = NEXT_POKE;
+				}
+			}
+        }
+        if(typeImWeakTowards != null) {
+			for(String wa : typeImWeakTowards) {
+				if(enemyType == wa) {
+					debug("Change! enemy is "+enemyType+" and I am weak toward them!");
 					pokeChoice = otherOption(newPoke.getName());
 					if(pokeChoice != -1)
 						choice = NEXT_POKE;

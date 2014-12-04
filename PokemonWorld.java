@@ -333,7 +333,6 @@ public class PokemonWorld extends World
                 }
             }
             else if (GaryStats.getHP() <= 0) {
-                Gary.saveOpponent(Ash.getCurrentPokemon().getName());
                 System.out.println(Gary.getCurrentPokemon().getName() + " has fainted!");
                 Gary.getCurrentPokemon().getImage().clear();
                 if (blackout(Gary)) {
@@ -342,7 +341,6 @@ public class PokemonWorld extends World
                     System.out.println("Ash Wins!");
                     round++;
                     ashScore++;
-                    ashTurn = true;
                     if (round < matches) {
                         Ash.getCurrentPokemon().getImage().clear();
                         newRound();
@@ -354,6 +352,7 @@ public class PokemonWorld extends World
                         Greenfoot.stop();
                     }
                 } else {
+					Gary.saveOpponent(Ash.getCurrentPokemon().getName());
                     playerAction = POKE_CHANGE;
                     if (!AI) {
                         x = worldWidth - 325;
@@ -664,8 +663,7 @@ public class PokemonWorld extends World
             Gary.changePokemon(0);
         }
         garyChoice = Gary.nextMove();
-        addObject(Ash, 160, 475);
-        garyChoice = Gary.nextMove();
+		System.out.println("!!!!!!! garyChoice is "+garyChoice);
         addObject(Ash, 160, 475);
         
         ArrayList<String> s = new ArrayList<String>();
