@@ -47,7 +47,7 @@ public class PokemonWorld extends World
     Image hpImg6;
     Image AshHP;
     Image GaryHP;
-   
+    Terrain terrain;
     boolean ashTurn;
     boolean ashPokeFaint;
     int worldWidth;    
@@ -129,6 +129,45 @@ public class PokemonWorld extends World
         GaryHP = new Image();
         
         setPaintOrder(AttackAnimation.class, Pokemon.class);
+        
+        ArrayList<String> s = new ArrayList<String>();
+        ArrayList<String> w = new ArrayList<String>();
+        //Terrain
+        ind = (int)((Math.random() * 6) % 6);
+        if (ind == 0) {
+            setBackground(new GreenfootImage("images/Windy.jpg"));
+            s.add("Flying");
+            w.add("Psychic");
+            terrain = new Terrain(s, w);
+        } else if (ind == 1) {
+            setBackground(new GreenfootImage("images/Rainy.jpg"));
+            s.add("Water");
+            s.add("Electric");
+            w.add("Fire");
+            terrain = new Terrain(s, w);
+        } else if (ind == 2) {
+            setBackground(new GreenfootImage("images/Lightning...y.jpg"));
+            s.add("Electric");
+            w.add("Water");
+            w.add("Fire");
+            terrain = new Terrain(s, w);
+        } else if (ind == 3) {
+            setBackground(new GreenfootImage("images/Foggy.jpg"));
+            w.add("Flying");
+            s.add("Psychic");
+            terrain = new Terrain(s, w);
+        } else if (ind == 4) {
+            setBackground(new GreenfootImage("images/Sunny.jpg"));
+            s.add("Grass");
+            s.add("Fire");
+            w.add("Water");
+            terrain = new Terrain(s, w);
+        } else if (ind == 5) {
+            setBackground(new GreenfootImage("images/Sandy.jpg"));
+            s.add("Rock");
+            w.add("Elecric");
+            terrain = new Terrain(s, w);
+        }
     }
     
     public void act() {
@@ -389,7 +428,7 @@ public class PokemonWorld extends World
                 System.out.println("It's super effective!");
                 localDamage *= 2;
                 local.superEffective(enemyPokemon, attack.getType().getName());
-                enemy.opponentSuperEffective(localPokemon, attack.getType().getName());
+                enemy.opponentSuperEffective(localPokemon);
             }
             else if (attack.getType().isWeak(enemy.getCurrentPokemon().getType())) {
                 localDamage = (int)(localDamage * 0.5);
@@ -399,6 +438,20 @@ public class PokemonWorld extends World
                     enemy.opponentNotEffective(localPokemon);
                 }
             }
+            
+            if (terrain.isStrong(attack.getType().getName())) {
+                localDamage = (int)(localDamage * 1.25);
+                System.out.println("The Terrain helps this attack!!");
+            } else if (terrain.isWeak(attack.getType().getName())) {
+                localDamage = (int)(localDamage * 0.75);
+                System.out.println("The Terrain suppresses this attack...");
+            }
+            
+            if (Math.random() * 100 <= 6.25) {
+                localDamage = (int)(localDamage * 1.75);
+                System.out.println("Critical Hit!!");
+            }
+            
             if (attack.getType().getName().equals(local.getCurrentPokemon().getType().getName())) {
                 localDamage = (int)(localDamage * 1.25);
             }
@@ -599,50 +652,5 @@ public class PokemonWorld extends World
                 return false;
         }
         return true;
-    }
-
-    public void calculateDamage(Trainer local, Trainer enemy, Attack attack) {
-        Stats localStats = local.getCurrentPokemon().getStats();
-        Stats enemyStats = enemy.getCurrentPokemon().getStats();
-        int localDamage = this.getDamage(localStats, enemyStats, attack);
-        String enemyPokemon = enemy.getCurrentPokemon().getName();
-        String localPokemon = local.getCurrentPokemon().getName();
-
-        if (new String(attack.getName()).equals(new String("Sand Attack"))) {
-            enemyStats.setAccuracy(enemyStats.getAccuracy() - 0.1);
-            if (enemyStats.getAccuracy() < 0.5) {
-                enemyStats.setAccuracy(0.5);
-                System.out.println("Accuracy cannot be lowered anymore!");
-            }
-        }
-        else if (isHit(localStats, enemyStats, attack)) {
-            if (attack.getType().isStrong(enemy.getCurrentPokemon().getType())) {
-                System.out.println("It's super effective!");
-                localDamage *= 2;
-                local.superEffective(enemyPokemon, attack.getType().getName());
-				enemy.opponentSuperEffective(localPokemon);
-            }
-            else if (attack.getType().isWeak(enemy.getCurrentPokemon().getType())) {
-                localDamage = (int)(localDamage * 0.5);
-                if (!(new String(attack.getName()).equals(new String("Sand Attack")))) {
-                    System.out.println("It's not very effective...");
-					local.notEffective(enemyPokemon, attack.getType().getName());
-					enemy.opponentNotEffective(localPokemon);
-				}
-            }
-            enemyStats.setHP(Math.max(0, enemyStats.getHP() - (int)localDamage));
-        }
-        else {
-            System.out.println(local.getCurrentPokemon().getName() + "'s Attack Missed!");
-        }
-        //HP printing purposes
-        if(local.getName() == "Ash") {
-            System.out.println(local.getCurrentPokemon().getName() + " HP : " + localStats.getHP());
-            System.out.println(enemy.getCurrentPokemon().getName() + " HP : " + enemyStats.getHP());
-        }
-        else {
-            System.out.println(enemy.getCurrentPokemon().getName() + " HP : " + enemyStats.getHP());
-            System.out.println(local.getCurrentPokemon().getName() + " HP : " + localStats.getHP());
-        }
     }
 }
