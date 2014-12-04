@@ -8,6 +8,21 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class Image extends Actor
 {
+    private GifImage gifImg;
+    private boolean isGif;
+    public Image() {
+        isGif = false;
+    }
+    
+    public void setImgGif(GifImage gif) {
+        isGif = true;
+        gifImg = gif;
+        setImage(gif.getCurrentImage());
+    }
+    
+    public void setIsGif() {
+        isGif = false;
+    }
     /**
      * Act - do whatever the Image wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
@@ -15,5 +30,8 @@ public class Image extends Actor
     public void act() 
     {
         // Add your action code here.
+        if (isGif) {
+            setImage(gifImg.getCurrentImage());
+        }
     }    
 }
