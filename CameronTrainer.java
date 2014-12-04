@@ -17,7 +17,7 @@ public class CameronTrainer extends Trainer
     static final int STRONG_TOWARDS = 4;
     static final int FIGHT = 1;
     static final int NEXT_POKE= 2;
-    boolean debug = true;
+    boolean debug = false;
     
     int pokeChoice = -1;
     int choice = FIGHT;

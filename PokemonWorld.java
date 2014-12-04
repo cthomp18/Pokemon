@@ -11,7 +11,7 @@ import java.lang.Math;
  */
 public class PokemonWorld extends World
 {
-    static final int TOURNAMENT_LENGTH = 3;
+    static final int TOURNAMENT_LENGTH = 1000;
     static final int START_TURN = 0;
     static final int CHOOSE_FIGHT = 1;
     static final int POKE_CHANGE = 2;
@@ -663,7 +663,6 @@ public class PokemonWorld extends World
             Gary.changePokemon(0);
         }
         garyChoice = Gary.nextMove();
-		System.out.println("!!!!!!! garyChoice is "+garyChoice);
         addObject(Ash, 160, 475);
         
         ArrayList<String> s = new ArrayList<String>();
