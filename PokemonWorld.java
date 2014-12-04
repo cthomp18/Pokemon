@@ -11,6 +11,7 @@ import java.lang.Math;
  */
 public class PokemonWorld extends World
 {
+    static final int TOURNAMENT_LENGTH = 3;
     static final int START_TURN = 0;
     static final int CHOOSE_FIGHT = 1;
     static final int POKE_CHANGE = 2;
@@ -18,7 +19,10 @@ public class PokemonWorld extends World
     int garyChoice;
 
     int playerAction = START_TURN; 
-
+    
+    int ashScore;
+    int garyScore;
+    
     Trainer Ash;
     Trainer Gary;
     GreenfootImage attackImage1;
@@ -52,6 +56,8 @@ public class PokemonWorld extends World
     boolean ashPokeFaint;
     int worldWidth;    
     int time;
+    int matches;
+    int round;
 
     Boolean AI = true;
     
@@ -63,48 +69,11 @@ public class PokemonWorld extends World
         ashTurn = true;
         worldWidth = this.getWidth() * this.getCellSize();
         
-        ArrayList<Pokemon> pokemon = new ArrayList<Pokemon>();
-        pokemon.add(new Mewtwo());
-        pokemon.add(new Blastoise());
-        pokemon.add(new Arcanine());
-        pokemon.add(new Dragonite());
-        pokemon.add(new Kangaskhan());
-        pokemon.add(new Onix());
-        pokemon.add(new Marowak());
-        pokemon.add(new Pikachu());
-        pokemon.add(new Venusaur());
-        pokemon.add(new Scyther());
-        pokemon.add(new Jigglypuff());
-        pokemon.add(new Rapidash());
-        pokemon.add(new Lapras());
-        pokemon.add(new Voltorb());
-        pokemon.add(new Pidgeot());
-        pokemon.add(new Alakazam());
-        ArrayList<Pokemon> AshPokemon = new ArrayList<Pokemon>();
-        ArrayList<Pokemon> GaryPokemon = new ArrayList<Pokemon>();
-        int ind;
-        for (int i = 0; i < 12; i++) {
-            ind = (int)((Math.random() * pokemon.size()) % pokemon.size());
-            if (ashTurn) {
-                AshPokemon.add(pokemon.remove(ind));
-                ashTurn = false;
-            } else {
-                GaryPokemon.add(pokemon.remove(ind));
-                ashTurn = true;
-            }
-        }
+        newRound();
+        
         time = 0;
         ashTurn = true;
         ashPokeFaint = false;
-        
-        addObject(AshPokemon.get(0), 150, 250);
-        addObject(GaryPokemon.get(0), 650, 250);
-        System.out.println("Ash sends out " + AshPokemon.get(0).getName() + "!");
-        System.out.println("Gary sends out " + GaryPokemon.get(0).getName() + "!");
-        Ash = new Trainer(AshPokemon, "Ash");
-        Gary = new CameronTrainer(GaryPokemon, "Gary");
-        garyChoice = Gary.nextMove();
-        addObject(Ash, 160, 475);
         
         attImg1 = new Image();
         attImg2 = new Image();
@@ -130,44 +99,10 @@ public class PokemonWorld extends World
         
         setPaintOrder(AttackAnimation.class, Pokemon.class);
         
-        ArrayList<String> s = new ArrayList<String>();
-        ArrayList<String> w = new ArrayList<String>();
-        //Terrain
-        ind = (int)((Math.random() * 6) % 6);
-        if (ind == 0) {
-            setBackground(new GreenfootImage("images/Windy.jpg"));
-            s.add("Flying");
-            w.add("Psychic");
-            terrain = new Terrain(s, w);
-        } else if (ind == 1) {
-            setBackground(new GreenfootImage("images/Rainy.jpg"));
-            s.add("Water");
-            s.add("Electric");
-            w.add("Fire");
-            terrain = new Terrain(s, w);
-        } else if (ind == 2) {
-            setBackground(new GreenfootImage("images/Lightning...y.jpg"));
-            s.add("Electric");
-            w.add("Water");
-            w.add("Fire");
-            terrain = new Terrain(s, w);
-        } else if (ind == 3) {
-            setBackground(new GreenfootImage("images/Foggy.jpg"));
-            w.add("Flying");
-            s.add("Psychic");
-            terrain = new Terrain(s, w);
-        } else if (ind == 4) {
-            setBackground(new GreenfootImage("images/Sunny.jpg"));
-            s.add("Grass");
-            s.add("Fire");
-            w.add("Water");
-            terrain = new Terrain(s, w);
-        } else if (ind == 5) {
-            setBackground(new GreenfootImage("images/Sandy.jpg"));
-            s.add("Rock");
-            w.add("Elecric");
-            terrain = new Terrain(s, w);
-        }
+        ashScore = 0;
+        garyScore = 0;
+        matches = TOURNAMENT_LENGTH;
+        round = 0;
     }
     
     public void act() {
@@ -375,7 +310,17 @@ public class PokemonWorld extends World
                 Ash.getCurrentPokemon().getImage().clear();
                 if (blackout(Ash)) {
                     System.out.println("Gary Wins!");
-                    Greenfoot.stop();
+                    round++;
+                    garyScore++;
+                    if (round < matches) {
+                        newRound();
+                    } else {
+                        if (ashScore > garyScore)
+                            System.out.println("Ash Wins " + ashScore + " - " + garyScore + "!!!");
+                        else
+                            System.out.println("Gary Wins " + ashScore + " - " + garyScore + "!!!");
+                        Greenfoot.stop();
+                    }
                 } else {
                     ashPokeFaint = true;
                     playerAction = 2;
@@ -388,8 +333,17 @@ public class PokemonWorld extends World
                 System.out.println(Gary.getCurrentPokemon().getName() + " has fainted!");
                 Gary.getCurrentPokemon().getImage().clear();
                 if (blackout(Gary)) {
-                    System.out.println("Ash Wins!");
-                    Greenfoot.stop();
+                    round++;
+                    garyScore++;
+                    if (round < matches) {
+                        newRound();
+                    } else {
+                        if (ashScore > garyScore)
+                            System.out.println("Ash Wins " + ashScore + " - " + garyScore + "!!!");
+                        else
+                            System.out.println("Gary Wins " + ashScore + " - " + garyScore + "!!!");
+                        Greenfoot.stop();
+                    }
                 } else {
                     playerAction = POKE_CHANGE;
                     if (!AI) {
@@ -406,7 +360,7 @@ public class PokemonWorld extends World
                     addObject(Gary, worldWidth - 160, 475);
             }
         }
-		garyChoice = Gary.nextMove();
+        garyChoice = Gary.nextMove();
     }
     
     public void calculateDamage(Trainer local, Trainer enemy, Attack attack) {
@@ -652,5 +606,94 @@ public class PokemonWorld extends World
                 return false;
         }
         return true;
+    }
+    
+    public void newRound() {
+        ArrayList<Pokemon> pokemon = new ArrayList<Pokemon>();
+        pokemon.add(new Mewtwo());
+        pokemon.add(new Blastoise());
+        pokemon.add(new Arcanine());
+        pokemon.add(new Dragonite());
+        pokemon.add(new Kangaskhan());
+        pokemon.add(new Onix());
+        pokemon.add(new Marowak());
+        pokemon.add(new Pikachu());
+        pokemon.add(new Venusaur());
+        pokemon.add(new Scyther());
+        pokemon.add(new Jigglypuff());
+        pokemon.add(new Rapidash());
+        pokemon.add(new Lapras());
+        pokemon.add(new Voltorb());
+        pokemon.add(new Pidgeot());
+        pokemon.add(new Alakazam());
+        
+        ArrayList<Pokemon> AshPokemon = new ArrayList<Pokemon>();
+        ArrayList<Pokemon> GaryPokemon = new ArrayList<Pokemon>();
+        int ind;
+        for (int i = 0; i < 12; i++) {
+            ind = (int)((Math.random() * pokemon.size()) % pokemon.size());
+            if (ashTurn) {
+                AshPokemon.add(pokemon.remove(ind));
+                ashTurn = false;
+            } else {
+                GaryPokemon.add(pokemon.remove(ind));
+                ashTurn = true;
+            }
+        }
+        
+        addObject(AshPokemon.get(0), 150, 250);
+        addObject(GaryPokemon.get(0), 650, 250);
+        System.out.println("Ash sends out " + AshPokemon.get(0).getName() + "!");
+        System.out.println("Gary sends out " + GaryPokemon.get(0).getName() + "!");
+        if (round == 0) {
+            Ash = new Trainer(AshPokemon, "Ash");
+            Gary = new CameronTrainer(GaryPokemon, "Gary");
+        } else {
+            Ash.replacePokemon(AshPokemon);
+            Gary.replacePokemon(GaryPokemon);
+        }
+        garyChoice = Gary.nextMove();
+        addObject(Ash, 160, 475);
+        garyChoice = Gary.nextMove();
+        addObject(Ash, 160, 475);
+        
+        ArrayList<String> s = new ArrayList<String>();
+        ArrayList<String> w = new ArrayList<String>();
+        //Terrain
+        ind = (int)((Math.random() * 6) % 6);
+        if (ind == 0) {
+            setBackground(new GreenfootImage("images/Windy.jpg"));
+            s.add("Flying");
+            w.add("Psychic");
+            terrain = new Terrain(s, w);
+        } else if (ind == 1) {
+            setBackground(new GreenfootImage("images/Rainy.jpg"));
+            s.add("Water");
+            s.add("Electric");
+            w.add("Fire");
+            terrain = new Terrain(s, w);
+        } else if (ind == 2) {
+            setBackground(new GreenfootImage("images/Lightning...y.jpg"));
+            s.add("Electric");
+            w.add("Water");
+            w.add("Fire");
+            terrain = new Terrain(s, w);
+        } else if (ind == 3) {
+            setBackground(new GreenfootImage("images/Foggy.jpg"));
+            w.add("Flying");
+            s.add("Psychic");
+            terrain = new Terrain(s, w);
+        } else if (ind == 4) {
+            setBackground(new GreenfootImage("images/Sunny.jpg"));
+            s.add("Grass");
+            s.add("Fire");
+            w.add("Water");
+            terrain = new Terrain(s, w);
+        } else if (ind == 5) {
+            setBackground(new GreenfootImage("images/Sandy.jpg"));
+            s.add("Rock");
+            w.add("Elecric");
+            terrain = new Terrain(s, w);
+        }
     }
 }
