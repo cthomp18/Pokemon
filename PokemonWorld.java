@@ -309,10 +309,14 @@ public class PokemonWorld extends World
                 System.out.println(Ash.getCurrentPokemon().getName() + " has fainted!");
                 Ash.getCurrentPokemon().getImage().clear();
                 if (blackout(Ash)) {
+                    removeObject(AshHP);
+                    removeObject(GaryHP);
                     System.out.println("Gary Wins!");
                     round++;
                     garyScore++;
+                    
                     if (round < matches) {
+                        Gary.getCurrentPokemon().getImage().clear();
                         newRound();
                     } else {
                         if (ashScore > garyScore)
@@ -333,9 +337,14 @@ public class PokemonWorld extends World
                 System.out.println(Gary.getCurrentPokemon().getName() + " has fainted!");
                 Gary.getCurrentPokemon().getImage().clear();
                 if (blackout(Gary)) {
+                    removeObject(AshHP);
+                    removeObject(GaryHP);
+                    System.out.println("Ash Wins!");
                     round++;
-                    garyScore++;
+                    ashScore++;
+                    ashTurn = true;
                     if (round < matches) {
+                        Ash.getCurrentPokemon().getImage().clear();
                         newRound();
                     } else {
                         if (ashScore > garyScore)
@@ -650,7 +659,9 @@ public class PokemonWorld extends World
             Gary = new CameronTrainer(GaryPokemon, "Gary");
         } else {
             Ash.replacePokemon(AshPokemon);
+            Ash.changePokemon(0);
             Gary.replacePokemon(GaryPokemon);
+            Gary.changePokemon(0);
         }
         garyChoice = Gary.nextMove();
         addObject(Ash, 160, 475);
