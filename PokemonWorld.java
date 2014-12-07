@@ -318,6 +318,12 @@ public class PokemonWorld extends World
                     if (round < matches) {
                         Gary.getCurrentPokemon().getImage().clear();
                         newRound();
+                        hpImg1.setDrawStatus(true);
+                        hpImg2.setDrawStatus(true);
+                        hpImg3.setDrawStatus(true);
+                        hpImg4.setDrawStatus(true);
+                        hpImg5.setDrawStatus(true);
+                        hpImg6.setDrawStatus(true);
                     } else {
                         if (ashScore > garyScore)
                             System.out.println("Ash Wins " + ashScore + " - " + garyScore + "!!!");
@@ -344,6 +350,12 @@ public class PokemonWorld extends World
                     if (round < matches) {
                         Ash.getCurrentPokemon().getImage().clear();
                         newRound();
+                        hpImg1.setDrawStatus(true);
+                        hpImg2.setDrawStatus(true);
+                        hpImg3.setDrawStatus(true);
+                        hpImg4.setDrawStatus(true);
+                        hpImg5.setDrawStatus(true);
+                        hpImg6.setDrawStatus(true);
                     } else {
                         if (ashScore > garyScore)
                             System.out.println("Ash Wins " + ashScore + " - " + garyScore + "!!!");
@@ -352,7 +364,7 @@ public class PokemonWorld extends World
                         Greenfoot.stop();
                     }
                 } else {
-					Gary.saveOpponent(Ash.getCurrentPokemon().getName());
+                    Gary.saveOpponent(Ash.getCurrentPokemon().getName());
                     playerAction = POKE_CHANGE;
                     if (!AI) {
                         x = worldWidth - 325;
@@ -484,31 +496,44 @@ public class PokemonWorld extends World
         if(pokemon.get(0).getStats().getHP() > 0) {
             img.scale((int)(pokemon.get(0).getStats().getHP()*0.5), 10);
             hpImg1.setImage(img);
+        }   else {
+            System.out.println("1 has no more HP");
+            hpImg1.setDrawStatus(false);
         }
         img = new GreenfootImage("images/HPBar.png");
         if(pokemon.get(1).getStats().getHP() > 0) {
             img.scale((int)(pokemon.get(1).getStats().getHP()*0.5), 10);
             hpImg2.setImage(img);
+        } else {
+            hpImg2.setDrawStatus(false);
         }
         img = new GreenfootImage("images/HPBar.png");
         if(pokemon.get(2).getStats().getHP() > 0) {
             img.scale((int)(pokemon.get(2).getStats().getHP()*0.5), 10);
             hpImg3.setImage(img);
+        } else {
+            hpImg3.setDrawStatus(false);
         }
         img = new GreenfootImage("images/HPBar.png");
         if(pokemon.get(3).getStats().getHP() > 0) {
             img.scale((int)(pokemon.get(3).getStats().getHP()*0.5), 10);
             hpImg4.setImage(img);
+        } else {
+            hpImg4.setDrawStatus(false);
         }
         img = new GreenfootImage("images/HPBar.png");
         if(pokemon.get(4).getStats().getHP() > 0) {
             img.scale((int)(pokemon.get(4).getStats().getHP()*0.5), 10);
             hpImg5.setImage(img);
+        } else {
+            hpImg5.setDrawStatus(false);
         }
         img = new GreenfootImage("images/HPBar.png");
         if(pokemon.get(5).getStats().getHP() > 0) {
             img.scale((int)(pokemon.get(5).getStats().getHP()*0.5), 10);
             hpImg6.setImage(img);
+        } else {
+            hpImg6.setDrawStatus(false);
         }
     }
     
@@ -525,17 +550,23 @@ public class PokemonWorld extends World
     
     public void drawPokemon(int x, int y) {
         addObject(pokImg1, x, y);
-        addObject(hpImg1, x, y + 20);
+        if(hpImg1.getDrawStatus())
+            addObject(hpImg1, x, y + 20);
         addObject(pokImg2, x += 60, y);
-        addObject(hpImg2, x, y + 20);
+        if(hpImg2.getDrawStatus())
+            addObject(hpImg2, x, y + 20);
         addObject(pokImg3, x += 60, y);
-        addObject(hpImg3, x, y + 20);
+        if(hpImg3.getDrawStatus())
+            addObject(hpImg3, x, y + 20);
         addObject(pokImg4, x += 60, y);
-        addObject(hpImg4, x, y + 20);
+        if(hpImg4.getDrawStatus())
+            addObject(hpImg4, x, y + 20);
         addObject(pokImg5, x += 60, y);
-        addObject(hpImg5, x, y + 20);
+        if(hpImg5.getDrawStatus())
+            addObject(hpImg5, x, y + 20);
         addObject(pokImg6, x += 60, y);
-        addObject(hpImg6, x, y + 20);
+        if(hpImg6.getDrawStatus())
+            addObject(hpImg6, x, y + 20);
     }
     
     public void clearAttack() {

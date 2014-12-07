@@ -10,6 +10,7 @@ public class Image extends Actor
 {
     private GifImage gifImg;
     private boolean isGif;
+    public boolean toBeDrawn = true;
     public Image() {
         isGif = false;
     }
@@ -23,6 +24,16 @@ public class Image extends Actor
     public void setIsGif() {
         isGif = false;
     }
+    
+    public void setDrawStatus(boolean status) {
+        toBeDrawn = status;
+    }
+    
+    public boolean getDrawStatus() {
+        return toBeDrawn;
+    }
+    
+   
     /**
      * Act - do whatever the Image wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
